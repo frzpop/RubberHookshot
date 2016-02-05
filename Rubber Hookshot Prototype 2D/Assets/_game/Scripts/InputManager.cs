@@ -6,7 +6,7 @@ public class InputManager : MonoBehaviour {
 	public GameObject player;
 	GameObject activeHook;
 
-	public float restartTimer = 0.8f;
+	public float restartTimer = 0.5f;
 	
 	void Start () 
 	{
@@ -26,12 +26,10 @@ public class InputManager : MonoBehaviour {
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			Physics.Raycast(ray, out hit);
 
-
-			if (hit.collider)
+			/*if (hit.collider)
 				print("collided with " + hit.collider.tag);
 			else
-				print("didn't collide with anything");
-			
+				print("didn't collide with anything");*/
 
 			if ( hit.collider && hit.collider.tag == "Hook" && hit.collider.gameObject != activeHook )
 			{
@@ -39,18 +37,6 @@ public class InputManager : MonoBehaviour {
 				player.GetComponent<Player>().Hook(hit.transform.position);
 				activeHook = hit.collider.gameObject;
 			}
-			else
-			{
-				//UNHOOK HERE (moved below)
-				//player.GetComponent<Player>().UnHook();
-				//activeHook = null;
-			}
-			
-		}
-
-		if ( Input.GetMouseButtonDown(0) && Input.GetMouseButtonDown(1) )
-		{
-		
 		}
 
 		if (Input.GetMouseButton(0) && Input.GetMouseButton(1) && !Input.GetMouseButton(3))

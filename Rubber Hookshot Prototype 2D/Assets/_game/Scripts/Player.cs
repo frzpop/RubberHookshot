@@ -55,8 +55,8 @@ public class Player : MonoBehaviour {
 			grounded = false;
 			colliding = false;
 		}
-			
-		
+
+		//Debug.Log( Mathf.Abs(rb.velocity.x) + " " + Mathf.Abs(rb.velocity.y) );
 	}
 
 	void FixedUpdate () 
@@ -76,7 +76,14 @@ public class Player : MonoBehaviour {
 	void OnCollisionEnter (Collision col)
 	{
 		if (col != null)
+		{
+			Debug.Log( "Collided and VEL WAS:" + Mathf.Abs(rb.velocity.x) + ", " + Mathf.Abs(rb.velocity.y) );
+			if ( ( Mathf.Abs(rb.velocity.x) > 5f ) || ( Mathf.Abs(rb.velocity.y) > 5f) )
+				Death();
+			else
 			colliding = true;
+		}
+			
 	}
 
 	void Rope()
@@ -90,6 +97,11 @@ public class Player : MonoBehaviour {
 
 		lr.SetWidth(Mathf.Lerp(0.08f, 0.6f, alphaMagnitude),
 					 Mathf.Lerp(0.08f, 0.6f, alphaMagnitude));
+	}
+
+	void Death()
+	{
+		Destroy(gameObject);
 	}
 
 	public void Hook (Vector3 hookPosition)
