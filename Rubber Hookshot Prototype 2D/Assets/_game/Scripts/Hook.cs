@@ -4,8 +4,8 @@ using System.Collections;
 public class Hook : MonoBehaviour
 {
 
-	public GameObject player;
-	bool clicked = false;
+	//public GameObject player;
+	//bool clicked = false;
 
 
 	/*void Update ()

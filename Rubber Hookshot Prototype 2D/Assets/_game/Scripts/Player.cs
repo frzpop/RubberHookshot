@@ -11,24 +11,17 @@ public class Player : MonoBehaviour {
 	bool hooked = false;
 	public bool grounded = false;
 	bool colliding = false;
-	bool test = false;
 
-	const float BASE_THRUST = 8f;
-	float thrust;
+	float thrust = 0f;
 	float distanceMultiplier;
-	
-	float maxThrust = 8f;
+
+	float maxThrust = 10f;
 	float acceleration = 0f;
-	float deaceleration = 20f;
-
-
 
 	void Start ()
 	{
 		rb = GetComponent<Rigidbody>();
 		lr = GetComponent<LineRenderer>();
-		thrust = BASE_THRUST;
-		
 	}
 
 	void Update ()
@@ -36,13 +29,14 @@ public class Player : MonoBehaviour {
 
 		if (hooked)
 		{
-			Rope();
-
-			acceleration = direction.magnitude;
-			if (thrust < maxThrust)
+			DrawRope();
+		
+			acceleration = direction.magnitude * 2f;
+			if ( thrust < maxThrust )
 			{
 				thrust += acceleration * Time.deltaTime;
 			}
+
 			grounded = false;
 			colliding = false;
 
@@ -64,11 +58,8 @@ public class Player : MonoBehaviour {
 		if (hooked)
 		{
 			direction = hookPos - transform.position;
-			distanceMultiplier = Mathf.Clamp( direction.magnitude, 0f, 5f );
-			
-			//rb.AddForce(direction.normalized * ( thrust * distanceMultiplier ), ForceMode.Acceleration);
+	
 			rb.AddForce(direction * thrust, ForceMode.Acceleration);
-
 		}
 		
 	}
@@ -77,16 +68,17 @@ public class Player : MonoBehaviour {
 	{
 		if (col != null)
 		{
-			Debug.Log( "Collided and VEL WAS:" + Mathf.Abs(rb.velocity.x) + ", " + Mathf.Abs(rb.velocity.y) );
-			if ( ( Mathf.Abs(rb.velocity.x) > 5f ) || ( Mathf.Abs(rb.velocity.y) > 5f) )
-				Death();
-			else
-			colliding = true;
+			//Debug.Log( "Collided and VEL WAS:" + Mathf.Abs(rb.velocity.x) + ", " + Mathf.Abs(rb.velocity.y) );
+			//if ( ( Mathf.Abs(rb.velocity.x) > 5f ) || ( Mathf.Abs(rb.velocity.y) > 5f) )
+			//	Death();
+			//else
+			//colliding = true;
+			Death ();
 		}
 			
 	}
 
-	void Rope()
+	void DrawRope()
 	{
 		lr.SetPosition(0, transform.position);
 		lr.SetPosition(1, hookPos);
@@ -101,7 +93,9 @@ public class Player : MonoBehaviour {
 
 	void Death()
 	{
-		Destroy(gameObject);
+		//Destroy(gameObject);
+		Application.LoadLevel("Test");
+
 	}
 
 	public void Hook (Vector3 hookPosition)
