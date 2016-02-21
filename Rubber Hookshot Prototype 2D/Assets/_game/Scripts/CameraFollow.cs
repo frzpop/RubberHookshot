@@ -16,7 +16,7 @@ public class CameraFollow : MonoBehaviour {
 	Camera cam;
 	float cameraSizeMin;
 	float cameraSizeMax;
-	float cameraZoomAmount = 10f;
+	float cameraZoomAmount = 9f;
 
 	float timer = 0f;
 	bool zoomIn = false;
