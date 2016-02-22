@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 477188}
   - 135: {fileID: 13506374}
   m_Layer: 0
-  m_Name: Hook
+  m_Name: Anchor
   m_TagString: Hook
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
