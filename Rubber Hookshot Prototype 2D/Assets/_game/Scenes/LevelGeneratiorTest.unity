@@ -171,92 +171,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!1 &835580215
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 835580217}
-  - 68: {fileID: 835580216}
-  m_Layer: 0
-  m_Name: Edge (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!68 &835580216
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 835580215}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  m_Points:
-  - {x: -6.677786, y: -0.049620718}
-  - {x: 6.801837, y: -1.8111578}
---- !u!4 &835580217
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 835580215}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
---- !u!1 &1170429471
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1170429473}
-  - 68: {fileID: 1170429472}
-  m_Layer: 0
-  m_Name: Edge
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!68 &1170429472
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1170429471}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  m_Points:
-  - {x: -6.677786, y: -0.049620718}
-  - {x: 6.801837, y: -1.8111578}
---- !u!4 &1170429473
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1170429471}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
 --- !u!1 &1554062967
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,7 +181,7 @@ GameObject:
   - 4: {fileID: 1554062969}
   - 114: {fileID: 1554062968}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: TESTERINO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -284,8 +198,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4217931611210a4a85c354b8a7672be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  edge: {fileID: 1170429472}
-  edge2: {fileID: 835580216}
+  edge: {fileID: 0}
+  edgePrefab: {fileID: 167054, guid: 0f8c942bbdbd1a1488891e6122677e4f, type: 2}
   test:
   - {x: 0, y: 0}
   - {x: 0, y: 0}
@@ -298,6 +212,16 @@ MonoBehaviour:
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
+  multiTest:
+  - {x: 0, y: 0}
+  - {x: 2.5, y: 2.5}
+  - {x: 5, y: -2.5}
+  - {x: 7.5, y: 2.5}
+  - {x: 10, y: -2.5}
+  - {x: 12.5, y: 2.5}
+  - {x: 15, y: -2.5}
+  - {x: 17.5, y: 2.5}
+  - {x: 20, y: 0}
 --- !u!4 &1554062969
 Transform:
   m_ObjectHideFlags: 0
