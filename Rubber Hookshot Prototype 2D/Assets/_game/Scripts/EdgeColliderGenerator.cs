@@ -67,7 +67,7 @@ public class EdgeColliderGenerator : MonoBehaviour {
                 prevPoint = points[i];                
             }                        
         }
-        MultiCurve( points );
+        MultiCurve( points, 40 );
     }
 
 	void SpawnCol ( Vector2[] points )
@@ -113,7 +113,7 @@ public class EdgeColliderGenerator : MonoBehaviour {
         return pFinal;
     }
 
-   void MultiCurve ( Vector2[] points )
+   void MultiCurve ( Vector2[] points, int res )
     {
         Vector2 start = Vector2.zero;
 		Vector2 cp = Vector2.zero;
@@ -129,7 +129,7 @@ public class EdgeColliderGenerator : MonoBehaviour {
 				end = (cp + points[i + 2]) / 2;
 
 				//SpawnCol( GeneratePoints( start, cp, end, points.Length ) ); // Used for separate objects.
-                vertices.AddRange(GeneratePoints(start, cp, end, points.Length));
+                vertices.AddRange(GeneratePoints(start, cp, end, res));
 
             }
 			else if ( i != 1 )
@@ -139,7 +139,7 @@ public class EdgeColliderGenerator : MonoBehaviour {
 				end = ( points[i] + points[i + 1] ) / 2;
 
                 //SpawnCol( GeneratePoints( start, cp, end, points.Length ) ); // Used for separate objects.
-                vertices.AddRange(GeneratePoints(start, cp, end, points.Length));
+                vertices.AddRange(GeneratePoints(start, cp, end, res));
 
             } 
 		}
