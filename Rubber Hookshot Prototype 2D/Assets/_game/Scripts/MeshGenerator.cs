@@ -133,7 +133,8 @@ public class MeshGenerator : MonoBehaviour {
 			}
 			else
 			{
-				a = i + 2;
+				//TODO TODO TODO
+				a = i + 1;
 				b = i;
 				c = i - 2;
 
