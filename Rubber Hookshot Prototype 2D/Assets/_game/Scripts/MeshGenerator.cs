@@ -108,40 +108,28 @@ public class MeshGenerator : MonoBehaviour {
 			}*/
 
 		//Define triangles
+		int off  = 0;
 		for (int i = 0; i < shape.edgeCount; i++)
 		{
 			int a;
 			int b;
 			int c;
 			int d;
-			int e;
-			int f;
+			
+			a = i + off;
+			b = i + 2 + off;
+			c = i + 3 + off;
+			d = i + 1 + off;
 
-			if (i % 2 == 0) // if index is even
-			{
-				a = i;
-				b = i + 2;
-				c = i + 3;
-				d = i - 2;
-
-				triangleIndices[ i ] = a;
-				triangleIndices[ i + 1 ] = b;
-				triangleIndices[ i + 2 ] = c;
-				triangleIndices[ i + 3 ] = b;
-				triangleIndices[ i + 4 ] = a;
-				triangleIndices[ i + 5 ] = d;
-			}
-			else
-			{
-				//TODO TODO TODO
-				a = i + 1;
-				b = i;
-				c = i - 2;
-
-				triangleIndices[i] = a;
-				triangleIndices[i + 1] = b;
-				triangleIndices[i + 2] = c;
-			}
+			triangleIndices[ i ] = a;
+			triangleIndices[ i + 1 ] = b;
+			triangleIndices[ i + 2 ] = c;
+			triangleIndices[ i + 3 ] = c;
+			triangleIndices[ i + 4 ] = d;
+			triangleIndices[ i + 5 ] = a;
+			
+			off += 1;
+		
 		}
 		triangleIndicesTEST = triangleIndices;
 
