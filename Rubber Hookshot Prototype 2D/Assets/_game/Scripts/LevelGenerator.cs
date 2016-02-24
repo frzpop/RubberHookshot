@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// THIS CLASS IS NOT NEEDED ANYMORE
 public class LevelGenerator : MonoBehaviour {
 
 

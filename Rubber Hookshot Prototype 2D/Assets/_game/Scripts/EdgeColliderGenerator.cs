@@ -9,7 +9,7 @@ public class EdgeColliderGenerator : MonoBehaviour {
 	public GameObject edgePrefab;
 
 	public Vector2[] test;
-	Vector2[] multiTest = new Vector2[6];
+	Vector2[] multiTest = new Vector2[7];
     Vector2 myStart = new Vector2(0f, 0f);
     Vector2 myCp = new Vector2(5f, 5f);
     Vector2 myEnd = new Vector2(10f, 0f);
@@ -45,9 +45,7 @@ public class EdgeColliderGenerator : MonoBehaviour {
         float increase = width / ( points.Length - 1 );
         float yDif = width / 10f;
         float yDifNeg = -yDif;
-        print(yDif);
-        print(yDifNeg);
-
+      
         for (int i = 0; i < points.Length; i++)
         {
             if ( i == 0 )
@@ -67,7 +65,7 @@ public class EdgeColliderGenerator : MonoBehaviour {
                 prevPoint = points[i];                
             }                        
         }
-        MultiCurve( points, 40 );
+        MultiCurve( points, 14 );
     }
 
 	void SpawnCol ( Vector2[] points )

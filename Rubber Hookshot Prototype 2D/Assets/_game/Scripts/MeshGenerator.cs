@@ -69,6 +69,9 @@ public class MeshGenerator : MonoBehaviour {
 		int triIndexCount = triCount * 3;
 		Vector2 myOffset = new Vector2( 0, 30f );
 		int[] lines = new int[ shape.edgeCount ];
+		print("edges: " + shape.edgeCount);
+		print("triCount: " + triCount);
+		print("triIndexCOunt; " + triIndexCount);
 
 		int[] triangleIndices	= new int[  triIndexCount ];
 		Vector3[] vertices		= new Vector3[ vertsCount ];
@@ -86,29 +89,9 @@ public class MeshGenerator : MonoBehaviour {
 		}
 		vertsTest = vertices;
 
-		/*
-			//Define triangles JOCHES SKIT JAG INTE FÅR ATT FUNGERA
-			int counter = 0;
-			int ti = 0;
-			int off = vertsInShape;
-			for ( int i = 0; i < shape.edgeCount - 1; i ++ )
-			{
-				counter += 1;
-				int a = off + lines[ i ] + vertsInShape;
-				int b = off + lines[ i ];
-				int c = off + lines[ i + 1];
-				int d = off + lines[i + 1] + vertsInShape;
-				triangleIndices[ti] = a;	ti++;
-				triangleIndices[ti] = b;	ti++;
-				triangleIndices[ti] = c;	ti++;
-				triangleIndices[ti] = c;	ti++;
-				triangleIndices[ti] = d;	ti++;
-				triangleIndices[ti] = a;	ti++;
-				print(counter);
-			}*/
-
 		//Define triangles
 		int off  = 0;
+		int ti = 0;
 		for (int i = 0; i < shape.edgeCount; i++)
 		{
 			int a;
@@ -121,13 +104,14 @@ public class MeshGenerator : MonoBehaviour {
 			c = i + 3 + off;
 			d = i + 1 + off;
 
-			triangleIndices[ i ] = a;
-			triangleIndices[ i + 1 ] = b;
-			triangleIndices[ i + 2 ] = c;
-			triangleIndices[ i + 3 ] = c;
-			triangleIndices[ i + 4 ] = d;
-			triangleIndices[ i + 5 ] = a;
-			
+			triangleIndices[ ti ] = a;		ti++;
+			triangleIndices[ ti ] = b;		ti++;
+			triangleIndices[ ti ] = c;		ti++;
+
+			triangleIndices[ ti ] = c;		ti++;
+			triangleIndices[ ti ] = d;		ti++;
+			triangleIndices[ ti ] = a;		ti++;
+
 			off += 1;
 		
 		}
