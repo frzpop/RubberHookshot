@@ -4,13 +4,14 @@ using System.Collections;
 public class InputManager : MonoBehaviour {
 
 	public GameObject player;
-	GameObject activeHook;
+    //public GameObject player2;
+    GameObject activeHook;
 
 	public float restartTimer = 0.5f;
 	
 	void Start () 
 	{
-		
+
 	}
 	
 	void Update () 
@@ -33,17 +34,35 @@ public class InputManager : MonoBehaviour {
 
 			if ( hit.collider && hit.collider.tag == "Hook" && hit.collider.gameObject != activeHook && hit.collider.gameObject.GetComponentInChildren<Renderer>().isVisible )
 			{
-				// HOOK HERE
-				player.GetComponent<Player>().Hook(hit.transform.position);
-				activeHook = hit.collider.gameObject;
+                // HOOK HERE
+                if (player.GetComponent<Player>() != null)
+                    player.GetComponent<Player>().Hook(hit.transform.position);
+                else
+                    player.GetComponent<Player2D>().Hook(hit.transform.position);
+
+                /*if (player2.GetComponent<Player>() != null)
+                    player2.GetComponent<Player>().Hook(hit.transform.position);
+                else
+                    player2.GetComponent<Player2D>().Hook(hit.transform.position);*/
+
+                activeHook = hit.collider.gameObject;
 			}
 		}
 
 		if (Input.GetMouseButton(0) && Input.GetMouseButton(1) && !Input.GetMouseButton(3))
 		{
 			//UNHOOK HERE
-			player.GetComponent<Player>().UnHook();
-			activeHook = null;
+            if (player.GetComponent<Player>() != null)
+			    player.GetComponent<Player>().UnHook();
+            else
+                player.GetComponent<Player2D>().UnHook();
+
+            /*if (player2.GetComponent<Player>() != null)
+                player2.GetComponent<Player>().UnHook();
+            else
+                player2.GetComponent<Player2D>().UnHook();*/
+
+            activeHook = null;
 
 			restartTimer -= Time.deltaTime;
 			if (restartTimer <= 0f)

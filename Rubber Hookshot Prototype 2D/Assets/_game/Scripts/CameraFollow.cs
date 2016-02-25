@@ -33,8 +33,12 @@ public class CameraFollow : MonoBehaviour {
 
 	void Update ()
 	{
-		playerVelocity = target.gameObject.GetComponent<Rigidbody>().velocity;
-		vel = playerVelocity * 0.25f * Time.deltaTime;
+        if (target.gameObject.GetComponent<Rigidbody>() != null)
+            playerVelocity = target.gameObject.GetComponent<Rigidbody>().velocity;
+        else
+            playerVelocity = target.gameObject.GetComponent<Rigidbody2D>().velocity;
+
+        vel = playerVelocity * 0.25f * Time.deltaTime;
 
 		velX = Mathf.Abs(playerVelocity.x);
 		velY = Mathf.Abs(playerVelocity.y);
