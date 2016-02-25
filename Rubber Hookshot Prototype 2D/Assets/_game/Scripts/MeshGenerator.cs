@@ -4,16 +4,13 @@ using System.Collections;
 public class MeshGenerator : MonoBehaviour {
 
 	Mesh mesh;
-	public EdgeCollider2D shape;
-	public Vector3[] vertsTest;
-	public int[] triangleIndicesTEST;
+	EdgeCollider2D shape;
 
 	void Start ()
 	{
 
-
 		MeshFilter mf = GetComponent<MeshFilter>();
-		if (mf.sharedMesh == null)
+		if ( mf.sharedMesh == null )
 			mf.sharedMesh = new Mesh();
 		mesh = mf.sharedMesh;
 
@@ -61,7 +58,7 @@ public class MeshGenerator : MonoBehaviour {
 	}
 	
 
-	void GenerateShape2D ( Mesh mesh, EdgeCollider2D shape )
+	public void GenerateShape2D ( Mesh mesh, EdgeCollider2D shape )
 	{
 		int vertsInShape = shape.pointCount;
 		int vertsCount = vertsInShape * 2;
@@ -87,7 +84,6 @@ public class MeshGenerator : MonoBehaviour {
 				vertices[ i + 1 ] = shape.points[ i / 2] - myOffset;
 			}
 		}
-		vertsTest = vertices;
 
 		//Define triangles
 		int off  = 0;
@@ -115,7 +111,6 @@ public class MeshGenerator : MonoBehaviour {
 			off += 1;
 		
 		}
-		triangleIndicesTEST = triangleIndices;
 
 		//define normals temp
 		for (int i = 0; i < vertsCount; i++)
