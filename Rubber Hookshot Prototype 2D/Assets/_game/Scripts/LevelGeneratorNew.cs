@@ -7,17 +7,19 @@ public class LevelGeneratorNew : MonoBehaviour {
 	public GameObject edgeColPrefab;
 	public GameObject meshPrefab;
 	GameObject[] edgeCols = new GameObject[6];
-	EdgeCollider2D edgeCol;
-	EdgeCollider2D edgeCol2;
-
+	EdgeCollider2D generatedCol;
+	EdgeCollider2D generatedCol2;
 	GameObject[] meshes = new GameObject[6];
-	
+	GameObject generatedMesh;
+	GameObject generatedMesh2;
+
 	Vector2[] myPoints = new Vector2[7];
+
+	float roofOffset = 50f;
+	float meshHeight = 30f;
 
 	void Start ()
     {
-
-
 		//Initialize meshes pool
 		for (int i = 0; i < meshes.Length; i++)
 			meshes[i] = (GameObject)Instantiate( meshPrefab, new Vector3( -1000f, -1000f, 0f ), Quaternion.identity );
@@ -26,23 +28,31 @@ public class LevelGeneratorNew : MonoBehaviour {
 		for (int i = 0; i < edgeCols.Length; i++)
 			edgeCols[i] = (GameObject)Instantiate( edgeColPrefab, new Vector3( -1000f, -1000f, 0f ), Quaternion.identity );
 
-		// Get a few pseudo random points
-		Vector2[] randomPoints = RandomPoints( Vector2.zero, 300f, myPoints );
-
-		//make points into a curve
-		List<Vector2> curveVerts = MultiCurve( randomPoints, 14 );
-
-		//Generate colission using curve vertices
-		edgeCol = SpawnCol( curveVerts, Vector2.zero, Quaternion.identity );
-
-		//Generate a 2D mesh that corresponds with the collision
-		GenerateMesh2D( edgeCol, edgeCol.transform.position, Quaternion.identity );
+		GenerateLevel();
 	}
 
 	void Update ()
 	{
-		if (Input.GetKeyDown(KeyCode.W))
-			RequestEdgeCol();
+		
+	}
+
+	void GenerateLevel ()
+	{
+		// Get a few pseudo random points
+		Vector2[] randomPoints = RandomPoints(Vector2.zero, 300f, myPoints);
+
+		//make points into a curve
+		List<Vector2> curveVerts = MultiCurve(randomPoints, 14);
+
+		//Generate colission using curve vertices
+		generatedCol = SpawnCol(curveVerts, Vector2.zero, Quaternion.identity);
+		Vector3 heightOffset = new Vector3( 0f, roofOffset, 0f) ;
+		generatedCol2 = SpawnCol(curveVerts, generatedCol.transform.position + heightOffset, Quaternion.identity);
+
+		//Generate a 2D mesh that corresponds with the collision
+		generatedMesh = GenerateMesh2D(generatedCol, meshHeight, generatedCol.transform.position, Quaternion.identity);
+		Vector3 heightOffsetMesh = new Vector3( 0f, roofOffset + meshHeight, 0f );
+		generatedMesh2 = GenerateMesh2D(generatedCol, meshHeight, generatedCol.transform.position + heightOffsetMesh, Quaternion.identity);
 	}
 
     Vector2[] RandomPoints ( Vector2 start, float width, Vector2[]points )
@@ -163,13 +173,13 @@ public class LevelGeneratorNew : MonoBehaviour {
         return pFinal;
     }
 
-	void GenerateMesh2D( EdgeCollider2D shape, Vector2 pos, Quaternion rot )
+	GameObject GenerateMesh2D( EdgeCollider2D shape, float height, Vector2 pos, Quaternion rot )
 	{
 		int vertsInShape = shape.pointCount;
 		int vertsCount = vertsInShape * 2;
 		int triCount = shape.edgeCount * 2;
 		int triIndexCount = triCount * 3;
-		Vector2 myOffset = new Vector2(0, 30f);
+		Vector2 myOffset = new Vector2(0, height);
 		int[] lines = new int[shape.edgeCount];
 
 		int[] triangleIndices = new int[triIndexCount];
@@ -231,6 +241,8 @@ public class LevelGeneratorNew : MonoBehaviour {
 		//Move mesh
 		meshObj.transform.position = pos;
 		meshObj.transform.rotation = rot;
+
+		return meshObj;
 	}
 
 	int ec = 0;
