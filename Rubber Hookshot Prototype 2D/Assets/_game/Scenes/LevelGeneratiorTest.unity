@@ -148,7 +148,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 429890, guid: c35118ed897a3a946bcd17683dbcb7d7, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 8.7
       objectReference: {fileID: 0}
     - target: {fileID: 429890, guid: c35118ed897a3a946bcd17683dbcb7d7, type: 2}
       propertyPath: m_LocalPosition.z
@@ -214,6 +214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   edgeColPrefab: {fileID: 167054, guid: 0f8c942bbdbd1a1488891e6122677e4f, type: 2}
   meshPrefab: {fileID: 172232, guid: f14c3a574d5fd9742a88670214b379cc, type: 2}
+  anchorPrefab: {fileID: 108226, guid: 780f9d31c92a4574cbe40dfa054695ad, type: 2}
 --- !u!4 &1554062969
 Transform:
   m_ObjectHideFlags: 0

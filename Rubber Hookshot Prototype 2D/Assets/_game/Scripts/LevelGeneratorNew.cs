@@ -6,6 +6,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 
 	public GameObject edgeColPrefab;
 	public GameObject meshPrefab;
+	public GameObject anchorPrefab;
 	GameObject[] edgeCols = new GameObject[6];
 	EdgeCollider2D generatedCol;
 	EdgeCollider2D generatedCol2;
@@ -49,10 +50,69 @@ public class LevelGeneratorNew : MonoBehaviour {
 		Vector3 heightOffset = new Vector3( 0f, roofOffset, 0f) ;
 		generatedCol2 = SpawnCol(curveVerts, generatedCol.transform.position + heightOffset, Quaternion.identity);
 
-		//Generate a 2D mesh that corresponds with the collision
+		//Generate two 2D meshes that corresponds with the collision
 		generatedMesh = GenerateMesh2D(generatedCol, meshHeight, generatedCol.transform.position, Quaternion.identity);
 		Vector3 heightOffsetMesh = new Vector3( 0f, roofOffset + meshHeight, 0f );
 		generatedMesh2 = GenerateMesh2D(generatedCol, meshHeight, generatedCol.transform.position + heightOffsetMesh, Quaternion.identity);
+
+		//generate anchors
+		float xMin = generatedCol.transform.position.x;
+		float xMax = xMin + generatedMesh.GetComponent<MeshRenderer>().bounds.size.x;
+		float yMin = GetLowest( generatedCol.points, false );
+		float yMax = generatedCol2.transform.position.y + GetHighest( generatedCol2.points, false );
+
+		Vector3[] testi = GenerateAnchors( 50, 50, xMin, xMax, yMin, yMax );
+		for (int i = 0; i < testi.Length; i++)
+		{
+			//print(testi[i]);
+		}
+	}
+
+	Vector3[] GenerateAnchors ( int minObj, int maxObj, float xMin, float xMax, float yMin, float yMax )
+	{
+		int anchorsAmount = Random.Range( minObj, maxObj );
+		GameObject[] anchors = new GameObject[anchorsAmount];
+		Vector3[] positions = new Vector3[anchorsAmount];
+
+		for (int i = 0; i < anchors.Length; i++)
+		{
+			anchors[i] = anchorPrefab;
+			
+			Vector3 pos = GetRandomPos( xMin, xMax, yMin, yMax, positions );
+			positions[i] = pos;
+			Instantiate( anchors[i], pos, Quaternion.identity );
+		}
+		return positions;
+
+	}
+
+	Vector3 GetRandomPos (float xMin, float xMax, float yMin, float yMax, Vector3[] positions )
+	{
+		Vector3 pos = Vector3.zero;
+		float tooClose = 5f;
+		bool close = true;
+		bool boolean = true;
+		while ( close )
+		{
+			float x = Random.Range(xMin, xMax);
+			float y = Random.Range(yMin, yMax);
+			pos = new Vector3(x, y, 0f);
+
+			for (int i = 0; i < positions.Length; i++)
+			{
+				if (positions[i] != null || positions[i] != Vector3.zero || Vector3.Distance(pos, positions[i]) < tooClose)
+					boolean = false;
+			}
+
+			if (boolean)
+				close = false;
+			else
+			{
+				Debug.LogError("Nope");
+				return pos;
+			}
+		}
+		return pos;
 	}
 
     Vector2[] RandomPoints ( Vector2 start, float width, Vector2[]points )
@@ -264,5 +324,63 @@ public class LevelGeneratorNew : MonoBehaviour {
 			mi = 0;
 
 		return meshes[mi];
+	}
+
+	float GetHighest ( Vector2[] points, bool RetX )
+	{
+		float x = points[0].x;
+		float y = points[0].y;
+		if (RetX)
+		{
+			for (int i = 0; i < points.Length; i++)
+			{
+				if (points[i].x > x)
+				{
+					x = points[i].x;
+				}
+			}
+			return x;
+		}
+		else
+		{
+			for (int i = 0; i < points.Length; i++)
+			{
+				if (points[i].y > y)
+				{
+					y = points[i].y;
+				}
+			}
+			return y;
+		}
+		
+	}
+
+	float GetLowest( Vector2[] points, bool RetX )
+	{
+		float x = points[0].x;
+		float y = points[0].y;
+		if (RetX)
+		{
+			for (int i = 0; i < points.Length; i++)
+			{
+				if (points[i].x < x)
+				{
+					x = points[i].x;
+				}
+			}
+			return x;
+		}
+		else
+		{
+			for (int i = 0; i < points.Length; i++)
+			{
+				if (points[i].y < y)
+				{
+					y = points[i].y;
+				}
+			}
+			return y;
+		}
+
 	}
 }
