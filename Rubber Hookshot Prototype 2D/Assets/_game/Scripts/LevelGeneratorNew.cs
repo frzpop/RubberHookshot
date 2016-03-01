@@ -19,6 +19,8 @@ public class LevelGeneratorNew : MonoBehaviour {
 	float roofOffset = 50f;
 	float meshHeight = 30f;
 
+	public List<Vector3> positions;
+
 	void Start ()
     {
 		//Initialize meshes pool
@@ -61,58 +63,80 @@ public class LevelGeneratorNew : MonoBehaviour {
 		float yMin = GetLowest( generatedCol.points, false );
 		float yMax = generatedCol2.transform.position.y + GetHighest( generatedCol2.points, false );
 
-		Vector3[] testi = GenerateAnchors( 50, 50, xMin, xMax, yMin, yMax );
-		for (int i = 0; i < testi.Length; i++)
-		{
-			//print(testi[i]);
-		}
+		GenerateAnchors( 20, 20, xMin, xMax, yMin, yMax );
+	
 	}
 
-	Vector3[] GenerateAnchors ( int minObj, int maxObj, float xMin, float xMax, float yMin, float yMax )
+	void GenerateAnchors ( int minObj, int maxObj, float xMin, float xMax, float yMin, float yMax )
 	{
 		int anchorsAmount = Random.Range( minObj, maxObj );
 		GameObject[] anchors = new GameObject[anchorsAmount];
-		Vector3[] positions = new Vector3[anchorsAmount];
+		positions = new List<Vector3>();
+		
 
 		for (int i = 0; i < anchors.Length; i++)
 		{
 			anchors[i] = anchorPrefab;
 			
 			Vector3 pos = GetRandomPos( xMin, xMax, yMin, yMax, positions );
-			positions[i] = pos;
+			positions.Add(pos);
 			Instantiate( anchors[i], pos, Quaternion.identity );
 		}
-		return positions;
+		//return positions;*/
 
 	}
 
-	Vector3 GetRandomPos (float xMin, float xMax, float yMin, float yMax, Vector3[] positions )
+	Vector3 GetRandomPos (float xMin, float xMax, float yMin, float yMax, List<Vector3> positions )
 	{
 		Vector3 pos = Vector3.zero;
-		float tooClose = 5f;
-		bool close = true;
-		bool boolean = true;
-		while ( close )
+		float minDistance = 25f;
+		bool loop = true;
+		bool isTooClose = false;
+		int tries = 0;
+
+		while ( loop )
 		{
 			float x = Random.Range(xMin, xMax);
 			float y = Random.Range(yMin, yMax);
 			pos = new Vector3(x, y, 0f);
+			tries++;
 
-			for (int i = 0; i < positions.Length; i++)
+			if (positions.Count != 0)
 			{
-				if (positions[i] != null || positions[i] != Vector3.zero || Vector3.Distance(pos, positions[i]) < tooClose)
-					boolean = false;
-			}
+				for (int i = 0; i < positions.Count; i++)
+				{
+					if (Mathf.Abs(Vector3.Distance(pos, positions[i])) < minDistance)
+					{
+						isTooClose = true;
+						break;
+					}
+					else
+						isTooClose = false;
+				}
 
-			if (boolean)
-				close = false;
+				if (!isTooClose)
+					loop = false;
+				else if (tries > 5)
+				{
+					print("I tried and failed");
+					return pos;
+				}
+					
+
+			}
 			else
 			{
-				Debug.LogError("Nope");
-				return pos;
+				loop = false;
+				print("list was empty so stop loop");
 			}
+				
+
+			
 		}
+		print("we did it!");
 		return pos;
+
+	
 	}
 
     Vector2[] RandomPoints ( Vector2 start, float width, Vector2[]points )
