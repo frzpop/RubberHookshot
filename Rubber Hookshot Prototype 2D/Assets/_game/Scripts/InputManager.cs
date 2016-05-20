@@ -8,6 +8,7 @@ public class InputManager : MonoBehaviour {
     GameObject activeHook;
 
 	public Material[] materials;
+	public GameObject clickIndicator;
 
 	float restartTimer = 0.5f;
 	float swithcMoveTimer = 1f;
@@ -57,6 +58,9 @@ public class InputManager : MonoBehaviour {
 			RaycastHit hit;
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			Physics.Raycast(ray, out hit);
+
+			//Vector3 pos = new Vector3( Input.mousePosition.x, Input.mousePosition.y, -3f );
+			Instantiate(clickIndicator, ray.GetPoint(1f), Quaternion.identity );
 
 			if (hit.collider)
 				print("collided with " + hit.collider.tag);
