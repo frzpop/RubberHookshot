@@ -22,6 +22,7 @@ public class Player2D : MonoBehaviour {
 	{
 		rb = GetComponent<Rigidbody2D>();
 		lr = GetComponent<LineRenderer>();
+		//Time.timeScale;
 	}
 
 	void Update ()
@@ -94,7 +95,7 @@ public class Player2D : MonoBehaviour {
 	void Death()
 	{
 		//Destroy(gameObject);
-		Application.LoadLevel("Test");
+		Application.LoadLevel("LevelGeneratiorTest");
 
 	}
 

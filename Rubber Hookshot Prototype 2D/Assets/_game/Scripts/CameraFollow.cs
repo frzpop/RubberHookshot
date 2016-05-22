@@ -5,6 +5,7 @@ public class CameraFollow : MonoBehaviour {
 
 
 	public Transform target;
+	public GameObject indicator;
 	Vector3 playerVelocity; // To GameManager?
 
 	Vector3 vel;
@@ -51,6 +52,9 @@ public class CameraFollow : MonoBehaviour {
 
 		follow = target.position + vel + new Vector3( 6f, 0f, transform.position.z );
 
+		GameObject myInd = (GameObject)Instantiate(indicator, new Vector3(follow.x, follow.y, 0f), Quaternion.identity);
+		StartCoroutine(DelayedDestroy(myInd));
+
 		timer += Time.deltaTime;
 	}
 
@@ -59,7 +63,7 @@ public class CameraFollow : MonoBehaviour {
 		// Follow on both axises and take into account player velocity 
 		transform.position = Vector3.Lerp( transform.position, follow, 0.2f );
 
-		ZoomCheck();
+		//ZoomCheck();
 	}
 
 	void ZoomCheck ()
@@ -89,5 +93,11 @@ public class CameraFollow : MonoBehaviour {
 		{
 			cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, cameraSizeMin, 0.01f);
 		}
+	}
+
+	IEnumerator DelayedDestroy(GameObject myObj)
+	{
+		yield return new WaitForSeconds(0.1f);
+		Destroy(myObj);
 	}
 }

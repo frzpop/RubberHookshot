@@ -9,12 +9,15 @@ public class InputManager : MonoBehaviour {
 
 	public Material[] materials;
 	public GameObject clickIndicator;
+	GameObject spawnedIndicator;
 
 	float restartTimer = 0.5f;
 	float swithcMoveTimer = 1f;
 	bool switched = false;
 	bool useNewMove = true;
 	
+
+
 	void Start () 
 	{
 
@@ -59,8 +62,11 @@ public class InputManager : MonoBehaviour {
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			Physics.Raycast(ray, out hit);
 
-			//Vector3 pos = new Vector3( Input.mousePosition.x, Input.mousePosition.y, -3f );
-			Instantiate(clickIndicator, ray.GetPoint(1f), Quaternion.identity );
+			// Click indicator
+		//	if ( spawnedIndicator )
+		//		Destroy( spawnedIndicator );
+
+		//	spawnedIndicator = (GameObject)Instantiate(clickIndicator, ray.GetPoint(1f), Quaternion.identity );
 
 			if (hit.collider)
 				print("collided with " + hit.collider.tag);
@@ -110,6 +116,10 @@ public class InputManager : MonoBehaviour {
 			RaycastHit hit;
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			Physics.Raycast(ray, out hit);
+
+			// Click indicator
+			if (spawnedIndicator)
+				Destroy(spawnedIndicator);
 
 			/*if (hit.collider)
 				print("collided with " + hit.collider.tag);
