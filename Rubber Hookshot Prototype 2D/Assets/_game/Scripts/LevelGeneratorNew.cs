@@ -9,6 +9,8 @@ public class LevelGeneratorNew : MonoBehaviour {
 	public GameObject edgeColPrefab;
 	public GameObject meshPrefab;
 	public GameObject anchorPrefab;
+	public GameObject checkPointPrefab;
+	Vector2 start = Vector2.zero;
 	GameObject[] edgeCols = new GameObject[6];
 	EdgeCollider2D generatedCol;
 	EdgeCollider2D generatedCol2;
@@ -36,33 +38,42 @@ public class LevelGeneratorNew : MonoBehaviour {
 		GenerateLevel();
 	}
 
-	void GenerateLevel ()
+	public void GenerateLevel ()
 	{
 		// Get a few pseudo random points
-		Vector2[] randomPoints = RandomPoints(Vector2.zero, 300f, myPoints);
+		Vector2[] randomPoints = RandomPoints( start, 300f, myPoints );
 	
 		//make points into a curve
 		List<Vector2> curveVerts = MultiCurve(randomPoints, 14);
 		cam.SetPoints( curveVerts, roofOffset ); // send to camera
 
 		//Generate colission using curve vertices
-		generatedCol = SpawnCol(curveVerts, Vector2.zero, Quaternion.identity);
+		generatedCol = SpawnCol ( curveVerts, Vector2.zero, Quaternion.identity );
 		Vector3 heightOffset = new Vector3( 0f, roofOffset, 0f) ;
-		generatedCol2 = SpawnCol(curveVerts, generatedCol.transform.position + heightOffset, Quaternion.identity);
+		generatedCol2 = SpawnCol( curveVerts, generatedCol.transform.position + heightOffset, Quaternion.identity );
 
 		//Generate two 2D meshes that corresponds with the collision
-		generatedMesh = GenerateMesh2D(generatedCol, meshHeight, generatedCol.transform.position, Quaternion.identity);
+		generatedMesh = GenerateMesh2D( generatedCol, meshHeight, generatedCol.transform.position, Quaternion.identity );
 		Vector3 heightOffsetMesh = new Vector3( 0f, roofOffset + meshHeight, 0f );
-		generatedMesh2 = GenerateMesh2D(generatedCol, meshHeight, generatedCol.transform.position + heightOffsetMesh, Quaternion.identity);
+		generatedMesh2 = GenerateMesh2D( generatedCol, meshHeight, generatedCol.transform.position + heightOffsetMesh, Quaternion.identity );
 
-		//generate anchors
+		//Generate anchors
+		GenerateAnchors(curveVerts, roofOffset);
+
+		//Spawn a checkpoint
+		Vector3 cpPos = new Vector3( start.x + ( generatedMesh.GetComponent<MeshRenderer>().bounds.size.x * 0.66f ) , start.y, -0.1f );
+		GameObject cp =  (GameObject)Instantiate( checkPointPrefab, cpPos, Quaternion.identity );
+		cp.GetComponent<CheckPoint>().SetLevelGenerator( gameObject.GetComponent<LevelGeneratorNew>() );
+
+		//Set next start position 
+		start = generatedCol.points[generatedCol.pointCount - 1];
+
+		/* OLD STUFF
 		float xMin = generatedCol.transform.position.x;
 		float xMax = xMin + generatedMesh.GetComponent<MeshRenderer>().bounds.size.x;
-		float yMin = GetLowest( generatedCol.points, false );
-		float yMax = generatedCol2.transform.position.y + GetHighest( generatedCol2.points, false );
+		float yMin = GetLowest(generatedCol.points, false);
+		float yMax = generatedCol2.transform.position.y + GetHighest(generatedCol2.points, false); */
 
-		GenerateAnchors( curveVerts, roofOffset );
-	
 	}
 
 	void GenerateAnchors ( List<Vector2> myPoints, float distance )

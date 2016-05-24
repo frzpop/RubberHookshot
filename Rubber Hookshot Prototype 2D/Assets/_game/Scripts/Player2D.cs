@@ -88,8 +88,8 @@ public class Player2D : MonoBehaviour {
 		float clampedDistance = Mathf.Clamp(currentDistance, 2f, 18f);
 		float alphaMagnitude = Remap(clampedDistance, 2f, 18f, 1f, 0f);
 
-		lr.SetWidth(Mathf.Lerp(0.08f, 0.6f, alphaMagnitude),
-					 Mathf.Lerp(0.08f, 0.6f, alphaMagnitude));
+		lr.SetWidth(Mathf.Lerp(0.15f, 0.9f, alphaMagnitude),
+					 Mathf.Lerp(0.15f, 0.9f, alphaMagnitude));
 	}
 
 	void Death()

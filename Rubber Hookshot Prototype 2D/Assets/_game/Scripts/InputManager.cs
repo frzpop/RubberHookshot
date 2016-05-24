@@ -68,10 +68,10 @@ public class InputManager : MonoBehaviour {
 
 		//	spawnedIndicator = (GameObject)Instantiate(clickIndicator, ray.GetPoint(1f), Quaternion.identity );
 
-			if (hit.collider)
+			/*if (hit.collider)
 				print("collided with " + hit.collider.tag);
 			else
-				print("didn't collide with anything");
+				print("didn't collide with anything");*/
 
 			if (hit.collider && hit.collider.tag == "Hook" && hit.collider.gameObject != activeHook && hit.collider.gameObject.GetComponentInChildren<Renderer>().isVisible)
 			{
@@ -101,7 +101,7 @@ public class InputManager : MonoBehaviour {
 
 			restartTimer -= Time.deltaTime;
 			if (restartTimer <= 0f)
-				Application.LoadLevel("Test");
+				Application.LoadLevel("LevelGeneratiorTest");
 		}
 		else if (Input.touchCount == 3)
 		{
@@ -155,7 +155,7 @@ public class InputManager : MonoBehaviour {
 
 			restartTimer -= Time.deltaTime;
 			if (restartTimer <= 0f)
-				Application.LoadLevel("Test");
+				Application.LoadLevel("LevelGeneratiorTest");
 		}
 		else if (Input.touchCount == 3)
 		{

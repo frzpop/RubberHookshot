@@ -126,7 +126,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 444092, guid: 48f4b915f24f8c143a02f644a539c700, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 11430786, guid: 48f4b915f24f8c143a02f644a539c700, type: 2}
       propertyPath: target
@@ -188,7 +188,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 429890, guid: c35118ed897a3a946bcd17683dbcb7d7, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 179094, guid: c35118ed897a3a946bcd17683dbcb7d7, type: 2}
       propertyPath: m_IsActive
@@ -197,6 +197,10 @@ Prefab:
     - target: {fileID: 5072958, guid: c35118ed897a3a946bcd17683dbcb7d7, type: 2}
       propertyPath: m_IsKinematic
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 179094, guid: c35118ed897a3a946bcd17683dbcb7d7, type: 2}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c35118ed897a3a946bcd17683dbcb7d7, type: 2}
@@ -233,6 +237,7 @@ MonoBehaviour:
   edgeColPrefab: {fileID: 167054, guid: 0f8c942bbdbd1a1488891e6122677e4f, type: 2}
   meshPrefab: {fileID: 172232, guid: f14c3a574d5fd9742a88670214b379cc, type: 2}
   anchorPrefab: {fileID: 108226, guid: 780f9d31c92a4574cbe40dfa054695ad, type: 2}
+  checkPointPrefab: {fileID: 108984, guid: 20f8f5d8929e3a14db8b8ee1126db737, type: 2}
   positions: []
 --- !u!4 &1554062969
 Transform:
@@ -301,7 +306,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 479444, guid: f410d4cc89326654a9a92bc81b73b15f, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 11416918, guid: f410d4cc89326654a9a92bc81b73b15f, type: 2}
       propertyPath: player
