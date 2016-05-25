@@ -7,7 +7,7 @@ public class CheckPoint : MonoBehaviour {
 
 	void OnTriggerEnter2D ( Collider2D other )
 	{
-		Debug.Log("Collided with " + other.tag);
+		//Debug.Log("Collided with " + other.tag);
 		if ( other.tag == "Player" )
 		{
 			levelGenerator.GenerateLevel();	

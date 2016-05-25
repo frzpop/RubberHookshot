@@ -99,6 +99,10 @@ public class InputManager : MonoBehaviour {
 
 			activeHook = null;
 
+			
+		}
+		else if ( Input.GetMouseButton(0) && Input.GetMouseButton(1) && !Input.GetMouseButton(3) )
+		{
 			restartTimer -= Time.deltaTime;
 			if (restartTimer <= 0f)
 				Application.LoadLevel("LevelGeneratiorTest");
@@ -106,6 +110,11 @@ public class InputManager : MonoBehaviour {
 		else if (Input.touchCount == 3)
 		{
 			Application.Quit();
+		}
+
+		if ( Input.GetMouseButtonUp(0) )
+		{
+			restartTimer = 0.5f;
 		}
 	}
 
@@ -155,11 +164,20 @@ public class InputManager : MonoBehaviour {
 
 			restartTimer -= Time.deltaTime;
 			if (restartTimer <= 0f)
+			{
 				Application.LoadLevel("LevelGeneratiorTest");
+
+			}
+				
 		}
 		else if (Input.touchCount == 3)
 		{
 			Application.Quit();
+		}
+
+		if (Input.GetMouseButtonUp(0))
+		{
+			restartTimer = 0.5f;
 		}
 	}
 }

@@ -51,6 +51,7 @@ public class CameraFollow : MonoBehaviour {
 		//		vel = Vector3.Lerp(vel, new Vector3(0f, 20f, 0f), 25f * Time.deltaTime);
 
 		follow = target.position + vel + new Vector3( 6f, 0f, transform.position.z );
+		//follow = new Vector3( follow.x, Mathf.Clamp( follow.y, center - 10f, center + 10f ), follow.z );
 
 		GameObject myInd = (GameObject)Instantiate(indicator, new Vector3(follow.x, follow.y, 0f), Quaternion.identity);
 		StartCoroutine(DelayedDestroy(myInd));
