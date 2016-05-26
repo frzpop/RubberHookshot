@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class LevelGeneratorNew : MonoBehaviour {
 
 	public GameObject indicator;
-	public CameraOnRails cam;
+	public CameraFollow cam;
 	public GameObject edgeColPrefab;
 	public GameObject meshPrefab;
 	public GameObject anchorPrefab;
@@ -20,8 +20,8 @@ public class LevelGeneratorNew : MonoBehaviour {
 
 	Vector2[] myPoints = new Vector2[7];
 
-	float roofOffset = 65f;
-	float meshHeight = 30f;
+	float roofOffset = 80f;
+	float meshHeight = 60f;
 
 	public List<Vector3> positions;
 
@@ -45,8 +45,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 	
 		//make points into a curve
 		List<Vector2> curveVerts = MultiCurve(randomPoints, 14);
-		cam.SetPoints( curveVerts, roofOffset ); // send to camera
-
+	
 		//Generate colission using curve vertices
 		generatedCol = SpawnCol ( curveVerts, Vector2.zero, Quaternion.identity );
 		Vector3 heightOffset = new Vector3( 0f, roofOffset, 0f) ;
@@ -68,6 +67,8 @@ public class LevelGeneratorNew : MonoBehaviour {
 		//Set next start position 
 		start = generatedCol.points[generatedCol.pointCount - 1];
 
+		cam.SetOffset(roofOffset);
+
 		/* OLD STUFF
 		float xMin = generatedCol.transform.position.x;
 		float xMax = xMin + generatedMesh.GetComponent<MeshRenderer>().bounds.size.x;
@@ -83,17 +84,18 @@ public class LevelGeneratorNew : MonoBehaviour {
 
 		for (int i = 0; i < myPoints.Count; i++)
 		{
-			float padding = 4f;
+			float bottomPadding = 12f;
+			float topPadding = 8f;
 			float minY;
 			float maxY;
 			
 			// Lower
 			if ( i == 0 ) // first time
 			{
-				minY = myPoints[i].y + padding;
-				maxY = myPoints[i].y + (distance / 2) - padding;
+				minY = myPoints[i].y + bottomPadding;
+				maxY = myPoints[i].y + (distance / 2) - topPadding;
 
-				float x = myPoints[i].x + Random.Range(-0.8f, 0.8f);
+				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
 				//float x = myPoints[i].x;
 				float y = Random.Range( minY, maxY );
 				Vector3 pos = new Vector3( x, y, 0f );
@@ -101,22 +103,22 @@ public class LevelGeneratorNew : MonoBehaviour {
 				lastX = pos.x;
 				lastY = pos.y;
 			}
-			else if ( i % 2 == 0 )
+			else if ( i % 4 == 0 )
 			{
-				float x = myPoints[i].x + Random.Range(-0.8f, 0.8f);
+				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
 				//float x = myPoints[i].x;
 
-				minY = myPoints[i].y + padding;
-				maxY = myPoints[i].y + (distance / 2) - padding;
+				minY = myPoints[i].y + bottomPadding;
+				maxY = myPoints[i].y + (distance / 2) - topPadding;
 
 				if ( lastY > minY + (distance / 4f) ) // above
-					maxY = lastY - padding;
+					maxY = lastY - topPadding;
 				else // under
-					minY = lastY + padding;
+					minY = lastY + bottomPadding;
 
-				float y = Random.Range(minY, maxY);
-				Vector3 pos = new Vector3(x, y, 0f);
-				Instantiate(anchorPrefab, pos, Quaternion.identity);
+				float y = Random.Range( minY, maxY );
+				Vector3 pos = new Vector3( x, y, 0f );
+				Instantiate( anchorPrefab, pos, Quaternion.identity );
 				lastX = pos.x;
 				lastY = pos.y;
 			}
@@ -125,10 +127,10 @@ public class LevelGeneratorNew : MonoBehaviour {
 			// Upper
 			if (i == 0) // first time
 			{
-				minY = myPoints[i].y + (distance / 2) + padding;
-				maxY = myPoints[i].y + distance - padding;
+				minY = myPoints[i].y + (distance / 2) + bottomPadding;
+				maxY = myPoints[i].y + distance - topPadding;
 
-				float x = myPoints[i].x + Random.Range(-0.8f, 0.8f);
+				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
 				//float x = myPoints[i].x;
 				float y = Random.Range(minY, maxY);
 				Vector3 pos = new Vector3(x, y, 0f);
@@ -136,18 +138,18 @@ public class LevelGeneratorNew : MonoBehaviour {
 				lastX = pos.x;
 				lastY = pos.y;
 			}
-			else if (i % 2 == 0)
+			else if (i % 5 == 0)
 			{
-				float x = myPoints[i].x + Random.Range(-0.8f, 0.8f);
+				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
 				//float x = myPoints[i].x;
 
-				minY = myPoints[i].y + (distance / 2) + padding;
-				maxY = myPoints[i].y + distance - padding;
+				minY = myPoints[i].y + (distance / 2) + bottomPadding;
+				maxY = myPoints[i].y + distance - topPadding;
 
 				if ( lastY > minY + (distance / 4f) ) // above
-					maxY = lastY - padding;
+					maxY = lastY - topPadding;
 				else // under
-					minY = lastY + padding;
+					minY = lastY + bottomPadding;
 
 				float y = Random.Range(minY, maxY);
 				Vector3 pos = new Vector3(x, y, 0f);

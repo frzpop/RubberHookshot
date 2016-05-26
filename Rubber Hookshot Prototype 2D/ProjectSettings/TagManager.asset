@@ -4,6 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Anchor
+  - Wall
   - Hook
   layers:
   - Default

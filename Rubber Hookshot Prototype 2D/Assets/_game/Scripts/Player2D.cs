@@ -6,9 +6,9 @@ public class Player2D : MonoBehaviour {
 	Rigidbody2D rb;
 	LineRenderer lr;
 
-	Vector3 hookPos = Vector3.zero;
+	Vector3 anchorPos = Vector3.zero;
 	Vector3 direction = Vector3.zero;
-	bool hooked = false;
+	bool anchored = false;
 	public bool grounded = false;
 	bool colliding = false;
 
@@ -22,13 +22,14 @@ public class Player2D : MonoBehaviour {
 	{
 		rb = GetComponent<Rigidbody2D>();
 		lr = GetComponent<LineRenderer>();
-		//Time.timeScale;
+		gameObject.GetComponent<Renderer>().material.SetColor( "_EmissionColor", Color.cyan );
+		//Time.timeScale = 0.1f;
 	}
 
 	void Update ()
 	{
 
-		if (hooked)
+		if (anchored)
 		{
 			DrawRope();
 		
@@ -51,14 +52,16 @@ public class Player2D : MonoBehaviour {
 			colliding = false;
 		}
 
+		ColorLerp( rb.velocity );
+
 		//Debug.Log( Mathf.Abs(rb.velocity.x) + " " + Mathf.Abs(rb.velocity.y) );
 	}
 
 	void FixedUpdate () 
 	{
-		if (hooked)
+		if (anchored)
 		{
-			direction = hookPos - transform.position;
+			direction = anchorPos - transform.position;
 	
 			rb.AddForce(direction * thrust, ForceMode2D.Force);
 		}
@@ -69,7 +72,7 @@ public class Player2D : MonoBehaviour {
 	{
 		if (col != null)
 		{
-			Debug.Log( "Collided and VEL WAS:" + Mathf.Abs(rb.velocity.x) + ", " + Mathf.Abs(rb.velocity.y) );
+			//Debug.Log( "Collided and VEL WAS:" + Mathf.Abs(rb.velocity.x) + ", " + Mathf.Abs(rb.velocity.y) );
 			//if ( ( Mathf.Abs(rb.velocity.x) > 5f ) || ( Mathf.Abs(rb.velocity.y) > 5f) )
 			//	Death();
 			//else
@@ -82,14 +85,16 @@ public class Player2D : MonoBehaviour {
 	void DrawRope()
 	{
 		lr.SetPosition(0, transform.position);
-		lr.SetPosition(1, hookPos);
+		lr.SetPosition(1, anchorPos);
 
-		float currentDistance = (transform.position - hookPos).magnitude;
+		float currentDistance = (transform.position - anchorPos).magnitude;
 		float clampedDistance = Mathf.Clamp(currentDistance, 2f, 18f);
 		float alphaMagnitude = Remap(clampedDistance, 2f, 18f, 1f, 0f);
 
-		lr.SetWidth(Mathf.Lerp(0.15f, 0.9f, alphaMagnitude),
-					 Mathf.Lerp(0.15f, 0.9f, alphaMagnitude));
+		float min = gameObject.transform.localScale.x * 0.08f;
+		float max = gameObject.transform.localScale.x * 0.35f;
+
+		lr.SetWidth( Mathf.Lerp( min, max, alphaMagnitude), Mathf.Lerp( min, max, alphaMagnitude) );
 	}
 
 	void Death()
@@ -99,22 +104,43 @@ public class Player2D : MonoBehaviour {
 
 	}
 
-	public void Hook (Vector3 hookPosition)
+	public void Anchor (Vector3 anchorPosition)
 	{
-		hooked = true;
-		hookPos = hookPosition;
+		anchored = true;
+		anchorPos = anchorPosition;
 	}
 
-	public void UnHook ()
+	public void UnAnchor ()
 	{
-		hooked = false;
+		anchored = false;
 		lr.SetPosition(0, Vector3.zero);
 		lr.SetPosition(1, Vector3.zero);
 	}
- 
-	float Remap (float s, float a1, float a2, float b1, float b2)
+
+	void ColorLerp ( Vector3 velocity )
 	{
-		return b1 + (s - a1) * (b2 - b1) / (a2 - a1);
+		float xVel = Mathf.Abs( velocity.x );
+		float yVel = Mathf.Abs(velocity.y);
+		float vel = 0f;
+		float max = 75f;
+
+		if ( xVel >= yVel )
+			vel = xVel;
+		else
+			vel = yVel;
+
+		vel = Mathf.Clamp( vel, 0f, max );
+		
+		vel = Remap( vel, 0f, max, 0f, 1f );
+		
+		Color color = Color.Lerp(Color.green, Color.red, vel);
+		gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", color);
+		
+	}
+
+	float Remap ( this float value, float from1, float to1, float from2, float to2 )
+	{
+		return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
 	}
 
 }

@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using System.Collections;
 
 public class InputManager : MonoBehaviour {
 
 	public GameObject player;
     //public GameObject player2;
-    GameObject activeHook;
+    GameObject activeAnchor;
 
 	public Material[] materials;
 	public GameObject clickIndicator;
 	GameObject spawnedIndicator;
+
+	public List<float> difs;
 
 	float restartTimer = 0.5f;
 	float swithcMoveTimer = 1f;
@@ -56,48 +59,57 @@ public class InputManager : MonoBehaviour {
 
 	void NewMove()
 	{
-		if (Input.GetMouseButtonDown(0) && activeHook == null)
+		if (Input.GetMouseButtonDown(0) && activeAnchor == null)
 		{
-			RaycastHit hit;
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			Physics.Raycast(ray, out hit);
+			if (spawnedIndicator)
+				Destroy(spawnedIndicator);
 
-			// Click indicator
-		//	if ( spawnedIndicator )
-		//		Destroy( spawnedIndicator );
+			difs.Clear();
 
-		//	spawnedIndicator = (GameObject)Instantiate(clickIndicator, ray.GetPoint(1f), Quaternion.identity );
+			Vector2 origin = Camera.main.ScreenToWorldPoint( Input.mousePosition );
+			RaycastHit2D[] hits = Physics2D.RaycastAll( origin, Vector2.zero );
 
-			/*if (hit.collider)
-				print("collided with " + hit.collider.tag);
-			else
-				print("didn't collide with anything");*/
+			/*Vector2 origin = new Vector2( Camera.main.sc (Input.mousePosition) );
+			RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down);*/
 
-			if (hit.collider && hit.collider.tag == "Hook" && hit.collider.gameObject != activeHook && hit.collider.gameObject.GetComponentInChildren<Renderer>().isVisible)
+			spawnedIndicator = (GameObject)Instantiate(clickIndicator, origin, Quaternion.identity);
+
+			int index = 0;
+			float shortest= 999f;
+			for (int i = 0; i < hits.Length; i++)
 			{
-				// HOOK HERE
-				if (player.GetComponent<Player>() != null)
-					player.GetComponent<Player>().Hook(hit.transform.position);
-				else
-					player.GetComponent<Player2D>().Hook(hit.transform.position);
+				if (hits[i].collider && hits[i].collider.tag == "Anchor" && hits[i].collider.gameObject != activeAnchor && hits[i].collider.gameObject.GetComponentInChildren<Renderer>().isVisible)
+				{
+					float dif =  Mathf.Abs( Vector2.Distance(origin, hits[i].collider.transform.position) );
+					difs.Add(dif);
 
-				/*if (player2.GetComponent<Player>() != null)
-                    player2.GetComponent<Player>().Hook(hit.transform.position);
-                else
-                    player2.GetComponent<Player2D>().Hook(hit.transform.position);*/
+					if ( hits[i].collider )
+						print("collided with " + hits[i].collider.tag);
+					else
+						print("didn't collide with anything");
 
-				activeHook = hit.collider.gameObject;
+				}
 			}
+
+			for (int i = 0; i < difs.Count; i++)
+			{
+				if ( shortest > difs[i])
+				{
+					shortest = difs[i];
+					index = i;
+				}
+			}
+
+			
+			// HOOK HERE
+			player.GetComponent<Player2D>().Anchor( hits[index].transform.position );
+			activeAnchor = hits[index].collider.gameObject;
 		}
-		else if ( Input.GetMouseButtonDown(0) && activeHook != null )
+		else if ( Input.GetMouseButtonDown(0) && activeAnchor != null )
 		{
 			//UNHOOK HERE
-			if (player.GetComponent<Player>() != null)
-				player.GetComponent<Player>().UnHook();
-			else
-				player.GetComponent<Player2D>().UnHook();
-
-			activeHook = null;
+			player.GetComponent<Player2D>().UnAnchor();
+			activeAnchor = null;
 
 			
 		}
@@ -127,28 +139,28 @@ public class InputManager : MonoBehaviour {
 			Physics.Raycast(ray, out hit);
 
 			// Click indicator
-			if (spawnedIndicator)
-				Destroy(spawnedIndicator);
+			//if (spawnedIndicator)
+				//Destroy(spawnedIndicator);
 
 			/*if (hit.collider)
 				print("collided with " + hit.collider.tag);
 			else
 				print("didn't collide with anything");*/
 
-			if (hit.collider && hit.collider.tag == "Hook" && hit.collider.gameObject != activeHook && hit.collider.gameObject.GetComponentInChildren<Renderer>().isVisible)
+			if (hit.collider && hit.collider.tag == "Anchor" && hit.collider.gameObject != activeAnchor && hit.collider.gameObject.GetComponentInChildren<Renderer>().isVisible)
 			{
 				// HOOK HERE
 				if (player.GetComponent<Player>() != null)
 					player.GetComponent<Player>().Hook(hit.transform.position);
 				else
-					player.GetComponent<Player2D>().Hook(hit.transform.position);
+					player.GetComponent<Player2D>().Anchor(hit.transform.position);
 
 				/*if (player2.GetComponent<Player>() != null)
                     player2.GetComponent<Player>().Hook(hit.transform.position);
                 else
                     player2.GetComponent<Player2D>().Hook(hit.transform.position);*/
 
-				activeHook = hit.collider.gameObject;
+				activeAnchor = hit.collider.gameObject;
 			}
 		}
 
@@ -158,9 +170,9 @@ public class InputManager : MonoBehaviour {
 			if (player.GetComponent<Player>() != null)
 				player.GetComponent<Player>().UnHook();
 			else
-				player.GetComponent<Player2D>().UnHook();
+				player.GetComponent<Player2D>().UnAnchor();
 
-			activeHook = null;
+			activeAnchor = null;
 
 			restartTimer -= Time.deltaTime;
 			if (restartTimer <= 0f)

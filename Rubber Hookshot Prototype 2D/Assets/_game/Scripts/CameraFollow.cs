@@ -6,6 +6,7 @@ public class CameraFollow : MonoBehaviour {
 
 	public Transform target;
 	public GameObject indicator;
+	public bool old;
 	Vector3 playerVelocity; // To GameManager?
 
 	Vector3 vel;
@@ -21,6 +22,8 @@ public class CameraFollow : MonoBehaviour {
 
 	float timer = 0f;
 	bool zoomIn = false;
+
+	float offset; // This is the difference in Y between ground and roof.
 
 
 	//Vector3 follow;
@@ -39,24 +42,40 @@ public class CameraFollow : MonoBehaviour {
         else
             playerVelocity = target.gameObject.GetComponent<Rigidbody2D>().velocity;
 
-        vel = playerVelocity * 0.25f * Time.deltaTime;
-
+        vel = playerVelocity * 0.08f;
+	
 		velX = Mathf.Abs(playerVelocity.x);
 		velY = Mathf.Abs(playerVelocity.y);
 		highestVel = Mathf.Max(velX, velY);
-
-		//	if (target.GetComponent<Player>().grounded)
-		//		vel = Vector3.Lerp(vel, new Vector3 (0f, 20f, 0f), 25f * Time.deltaTime);
-		//	else
-		//		vel = Vector3.Lerp(vel, new Vector3(0f, 20f, 0f), 25f * Time.deltaTime);
-
-		follow = target.position + vel + new Vector3( 6f, 0f, transform.position.z );
-		//follow = new Vector3( follow.x, Mathf.Clamp( follow.y, center - 10f, center + 10f ), follow.z );
-
-		GameObject myInd = (GameObject)Instantiate(indicator, new Vector3(follow.x, follow.y, 0f), Quaternion.identity);
-		StartCoroutine(DelayedDestroy(myInd));
+	
 
 		timer += Time.deltaTime;
+
+		if (old)
+		{
+			follow = target.position + vel + new Vector3(12f, 0f, transform.position.z);
+		}
+		else
+		{
+			Vector2 origin = new Vector2(target.position.x + 10f, target.position.y);
+			RaycastHit2D[] hit = Physics2D.RaycastAll(origin, Vector2.down);
+
+			float center = 0f;
+			for (int i = 0; i < hit.Length; i++)
+			{
+				if ((hit[i].collider != null) && hit[i].collider.tag == "Wall")
+				{
+					//Debug.Log("collided with: " + hit[i].collider.tag);
+					center = hit[i].point.y + offset;
+					follow = target.position + vel + new Vector3(12f, 0f, transform.position.z);
+					follow = new Vector3(follow.x, Mathf.Clamp(follow.y, center - 10f, center + 10f), follow.z);
+				}
+				
+			}
+		}
+		/*GameObject myInd = (GameObject)Instantiate(indicator, new Vector3(follow.x, follow.y, 0f), Quaternion.identity);
+		StartCoroutine(DelayedDestroy(myInd));*/
+
 	}
 
 	void FixedUpdate () 
@@ -100,5 +119,9 @@ public class CameraFollow : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(0.1f);
 		Destroy(myObj);
+	}
+	public void SetOffset ( float myOffset )
+	{
+		offset = myOffset / 2;
 	}
 }
