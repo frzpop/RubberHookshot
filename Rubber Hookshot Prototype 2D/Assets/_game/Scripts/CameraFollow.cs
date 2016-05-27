@@ -75,14 +75,11 @@ public class CameraFollow : MonoBehaviour {
 		}
 		/*GameObject myInd = (GameObject)Instantiate(indicator, new Vector3(follow.x, follow.y, 0f), Quaternion.identity);
 		StartCoroutine(DelayedDestroy(myInd));*/
-
 	}
 
 	void FixedUpdate () 
 	{
-		// Follow on both axises and take into account player velocity 
 		transform.position = Vector3.Lerp( transform.position, follow, 0.2f );
-
 		//ZoomCheck();
 	}
 

@@ -20,7 +20,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 
 	Vector2[] myPoints = new Vector2[7];
 
-	float roofOffset = 80f;
+	float roofOffset = 85f;
 	float meshHeight = 60f;
 
 	public List<Vector3> positions;
