@@ -112,9 +112,13 @@ public class Player2D : MonoBehaviour {
 
 	public void UnAnchor ()
 	{
-		anchored = false;
-		lr.SetPosition(0, Vector3.zero);
-		lr.SetPosition(1, Vector3.zero);
+		if ( anchored )
+		{
+			anchored = false;
+			lr.SetPosition(0, Vector3.zero);
+			lr.SetPosition(1, Vector3.zero);
+		}
+		
 	}
 
 	void ColorLerp ( Vector3 velocity )

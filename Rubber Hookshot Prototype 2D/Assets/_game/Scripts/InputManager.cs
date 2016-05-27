@@ -49,17 +49,13 @@ public class InputManager : MonoBehaviour {
 			switched = false;
 		}
 			
-
-
-		if ( useNewMove )
-			NewMove();
-		else
-			OldMove();
+		NewMove();
+	
 	}
 
 	void NewMove()
 	{
-		if (Input.GetMouseButtonDown(0) && activeAnchor == null)
+		if ( Input.GetMouseButtonDown(0)  )
 		{
 			if (spawnedIndicator)
 				Destroy(spawnedIndicator);
@@ -76,9 +72,19 @@ public class InputManager : MonoBehaviour {
 
 			int index = 0;
 			float shortest= 999f;
+
 			for (int i = 0; i < hits.Length; i++)
 			{
-				if (hits[i].collider && hits[i].collider.tag == "Anchor" && hits[i].collider.gameObject != activeAnchor && hits[i].collider.gameObject.GetComponentInChildren<Renderer>().isVisible)
+				Debug.Log(hits[i].transform.gameObject.tag);
+				if (hits[i].transform.gameObject.tag == "UI")
+					break;
+			}
+			for (int i = 0; i < hits.Length; i++)	
+			{
+				
+				if ( hits[i].collider && hits[i].collider.tag == "Anchor" && 
+					hits[i].collider.gameObject != activeAnchor && 
+					hits[i].collider.gameObject.GetComponentInChildren<Renderer>().isVisible )
 				{
 					float dif =  Mathf.Abs( Vector2.Distance(origin, hits[i].collider.transform.position) );
 					difs.Add(dif);
@@ -100,17 +106,13 @@ public class InputManager : MonoBehaviour {
 				}
 			}
 
-			
 			// HOOK HERE
-			player.GetComponent<Player2D>().Anchor( hits[index].transform.position );
-			activeAnchor = hits[index].collider.gameObject;
-		}
-		else if ( Input.GetMouseButtonDown(0) && activeAnchor != null )
-		{
-			//UNHOOK HERE
-			player.GetComponent<Player2D>().UnAnchor();
-			activeAnchor = null;
+			if ( hits.Length != 0 )
+			{
+				player.GetComponent<Player2D>().Anchor(hits[index].transform.position);
+				activeAnchor = hits[index].collider.gameObject;
 
+			}
 			
 		}
 		else if ( Input.GetMouseButton(0) && Input.GetMouseButton(1) && !Input.GetMouseButton(3) )
@@ -130,66 +132,4 @@ public class InputManager : MonoBehaviour {
 		}
 	}
 
-	void OldMove()
-	{
-		if (Input.GetMouseButtonDown(0))
-		{
-			RaycastHit hit;
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			Physics.Raycast(ray, out hit);
-
-			// Click indicator
-			//if (spawnedIndicator)
-				//Destroy(spawnedIndicator);
-
-			/*if (hit.collider)
-				print("collided with " + hit.collider.tag);
-			else
-				print("didn't collide with anything");*/
-
-			if (hit.collider && hit.collider.tag == "Anchor" && hit.collider.gameObject != activeAnchor && hit.collider.gameObject.GetComponentInChildren<Renderer>().isVisible)
-			{
-				// HOOK HERE
-				if (player.GetComponent<Player>() != null)
-					player.GetComponent<Player>().Hook(hit.transform.position);
-				else
-					player.GetComponent<Player2D>().Anchor(hit.transform.position);
-
-				/*if (player2.GetComponent<Player>() != null)
-                    player2.GetComponent<Player>().Hook(hit.transform.position);
-                else
-                    player2.GetComponent<Player2D>().Hook(hit.transform.position);*/
-
-				activeAnchor = hit.collider.gameObject;
-			}
-		}
-
-		if (Input.GetMouseButton(0) && Input.GetMouseButton(1) && !Input.GetMouseButton(3))
-		{
-			//UNHOOK HERE
-			if (player.GetComponent<Player>() != null)
-				player.GetComponent<Player>().UnHook();
-			else
-				player.GetComponent<Player2D>().UnAnchor();
-
-			activeAnchor = null;
-
-			restartTimer -= Time.deltaTime;
-			if (restartTimer <= 0f)
-			{
-				Application.LoadLevel("LevelGeneratiorTest");
-
-			}
-				
-		}
-		else if (Input.touchCount == 3)
-		{
-			Application.Quit();
-		}
-
-		if (Input.GetMouseButtonUp(0))
-		{
-			restartTimer = 0.5f;
-		}
-	}
 }
