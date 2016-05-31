@@ -25,32 +25,48 @@ public class InputManager : MonoBehaviour {
 	{
 
 	}
-	
-	void Update () 
+
+	void Update()
 	{
-		if ( Input.GetMouseButton(0) )
+		if (Input.GetMouseButton(0))
 		{
 			swithcMoveTimer -= Time.deltaTime;
-			if ( swithcMoveTimer <= 0f && !switched )
+			if (swithcMoveTimer <= 0f && !switched)
 			{
 				useNewMove = !useNewMove;
 				switched = true;
-				if ( useNewMove )
+				if (useNewMove)
 					player.GetComponent<Renderer>().material = materials[0];
 				else
 					player.GetComponent<Renderer>().material = materials[1];
 
 			}
-				
+
 		}
 		else
 		{
 			swithcMoveTimer = 1f;
 			switched = false;
 		}
-			
+
 		NewMove();
-	
+
+		if (Input.GetMouseButton(0) && Input.GetMouseButton(1) && !Input.GetMouseButton(3))
+		{
+			restartTimer -= Time.deltaTime;
+			if (restartTimer <= 0f)
+				Application.LoadLevel("LevelGeneratiorTest");
+		}
+		else if (Input.touchCount == 3)
+		{
+			Application.Quit();
+		}
+
+		if (Input.GetMouseButtonUp(0))
+		{
+			restartTimer = 0.5f;
+		}
+
 	}
 
 	void NewMove()

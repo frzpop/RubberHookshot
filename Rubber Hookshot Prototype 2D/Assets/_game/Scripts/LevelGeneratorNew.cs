@@ -297,7 +297,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 		int[] triangleIndices = new int[triIndexCount];
 		Vector3[] vertices = new Vector3[vertsCount];
 		Vector3[] normals = new Vector3[vertsCount];
-		//Vector2[] uvs	= new Vector2[ vertsCount ];
+		Vector2[] uvs	= new Vector2[ vertsCount ];
 
 		//Define vertices
 		for (int i = 0; i < vertsCount; i++)
@@ -332,9 +332,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 
 		//define normals TEMP?
 		for (int i = 0; i < vertsCount; i++)
-		{
 			normals[i] = Vector3.back;
-		}
 
 		//Request mesh from pool
 		GameObject meshObj = RequestMesh();

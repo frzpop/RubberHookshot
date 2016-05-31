@@ -138,38 +138,6 @@ Prefab:
       propertyPath: target
       value: 
       objectReference: {fileID: 780870825}
-    - target: {fileID: 11430786, guid: 48f4b915f24f8c143a02f644a539c700, type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2094794, guid: 48f4b915f24f8c143a02f644a539c700, type: 2}
-      propertyPath: orthographic size
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 11430786, guid: 48f4b915f24f8c143a02f644a539c700, type: 2}
-      propertyPath: indicator
-      value: 
-      objectReference: {fileID: 141034, guid: 3c9d1c64352faed4da2c7dc797607c84, type: 2}
-    - target: {fileID: 11430786, guid: 48f4b915f24f8c143a02f644a539c700, type: 2}
-      propertyPath: old
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2094794, guid: 48f4b915f24f8c143a02f644a539c700, type: 2}
-      propertyPath: m_BackGroundColor.r
-      value: 0.9080629
-      objectReference: {fileID: 0}
-    - target: {fileID: 2094794, guid: 48f4b915f24f8c143a02f644a539c700, type: 2}
-      propertyPath: m_BackGroundColor.g
-      value: 0.9338235
-      objectReference: {fileID: 0}
-    - target: {fileID: 2094794, guid: 48f4b915f24f8c143a02f644a539c700, type: 2}
-      propertyPath: m_BackGroundColor.b
-      value: 0.8170956
-      objectReference: {fileID: 0}
-    - target: {fileID: 11430786, guid: 48f4b915f24f8c143a02f644a539c700, type: 2}
-      propertyPath: myLayerMask.m_Bits
-      value: 768
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 48f4b915f24f8c143a02f644a539c700, type: 2}
   m_IsPrefabParent: 0
@@ -184,9 +152,10 @@ GameObject:
   - 222: {fileID: 514981571}
   - 114: {fileID: 514981570}
   - 114: {fileID: 514981569}
+  - 61: {fileID: 514981572}
   m_Layer: 5
   m_Name: Button
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -205,10 +174,10 @@ RectTransform:
   - {fileID: 1354439885}
   m_Father: {fileID: 2002321289}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 811, y: -391}
-  m_SizeDelta: {x: 256, y: 256}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 167.00073, y: 162}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &514981569
 MonoBehaviour:
@@ -274,7 +243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.541}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -295,6 +264,20 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 514981567}
+--- !u!61 &514981572
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 514981567}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
 --- !u!4 &780870825 stripped
 Transform:
   m_PrefabParentObject: {fileID: 429890, guid: c35118ed897a3a946bcd17683dbcb7d7, type: 2}
@@ -434,7 +417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 0.716}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -442,19 +425,19 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
-    m_FontStyle: 0
+    m_Font: {fileID: 12800000, guid: 87c316b602156405d92e616621658222, type: 3}
+    m_FontSize: 142
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 264
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: X
 --- !u!222 &1354439887
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -504,7 +487,7 @@ MonoBehaviour:
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
   m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
+  m_InputActionsPerSecond: 60
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
 --- !u!114 &1866313363
@@ -563,7 +546,7 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
+  m_IgnoreReversedGraphics: 0
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2

@@ -43,14 +43,14 @@ public class Player2D : MonoBehaviour {
 			colliding = false;
 
 		}
-		else if (colliding && rb.velocity.x < 0.2f && rb.velocity.y < 0.2f)
+		/*else if (colliding && rb.velocity.x < 0.2f && rb.velocity.y < 0.2f)
 			grounded = true;
 		else
 		{
 			thrust = 0f;
 			grounded = false;
 			colliding = false;
-		}
+		}*/
 
 		ColorLerp( rb.velocity );
 
@@ -77,7 +77,7 @@ public class Player2D : MonoBehaviour {
 			//	Death();
 			//else
 			//colliding = true;
-			Death ();
+			//Death ();
 		}
 			
 	}
@@ -105,7 +105,7 @@ public class Player2D : MonoBehaviour {
 	}
 
 	public void Anchor (Vector3 anchorPosition)
-	{
+	{	
 		anchored = true;
 		anchorPos = anchorPosition;
 	}
