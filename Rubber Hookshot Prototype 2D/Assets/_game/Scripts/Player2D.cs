@@ -72,12 +72,12 @@ public class Player2D : MonoBehaviour {
 	{
 		if (col != null)
 		{
-			//Debug.Log( "Collided and VEL WAS:" + Mathf.Abs(rb.velocity.x) + ", " + Mathf.Abs(rb.velocity.y) );
-			//if ( ( Mathf.Abs(rb.velocity.x) > 5f ) || ( Mathf.Abs(rb.velocity.y) > 5f) )
-			//	Death();
-			//else
-			//colliding = true;
-			//Death ();
+			/*Debug.Log( "Collided and VEL WAS:" + Mathf.Abs(rb.velocity.x) + ", " + Mathf.Abs(rb.velocity.y) );
+			if ( ( Mathf.Abs(rb.velocity.x) > 5f ) || ( Mathf.Abs(rb.velocity.y) > 5f) )
+				Death();
+			else
+				colliding = true;*/
+			Death ();
 		}
 			
 	}

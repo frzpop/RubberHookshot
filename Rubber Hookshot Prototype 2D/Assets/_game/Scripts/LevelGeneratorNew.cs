@@ -10,13 +10,14 @@ public class LevelGeneratorNew : MonoBehaviour {
 	public GameObject meshPrefab;
 	public GameObject anchorPrefab;
 	public GameObject checkPointPrefab;
+
 	Vector2 start = Vector2.zero;
-	GameObject[] edgeCols = new GameObject[6];
 	EdgeCollider2D generatedCol;
 	EdgeCollider2D generatedCol2;
-	GameObject[] meshes = new GameObject[6];
 	GameObject generatedMesh;
 	GameObject generatedMesh2;
+	GameObject[] edgeCols = new GameObject[6];
+	GameObject[] meshes = new GameObject[6];
 
 	Vector2[] myPoints = new Vector2[7];
 
@@ -51,7 +52,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 		Vector3 heightOffset = new Vector3( 0f, roofOffset, 0f) ;
 		generatedCol2 = SpawnCol( curveVerts, generatedCol.transform.position + heightOffset, Quaternion.identity );
 
-		//Generate two 2D meshes that corresponds with the collision
+		//Generate two 2D meshes that correspond with the collision
 		generatedMesh = GenerateMesh2D( generatedCol, meshHeight, generatedCol.transform.position, Quaternion.identity );
 		Vector3 heightOffsetMesh = new Vector3( 0f, roofOffset + meshHeight, 0f );
 		generatedMesh2 = GenerateMesh2D( generatedCol, meshHeight, generatedCol.transform.position + heightOffsetMesh, Quaternion.identity );
@@ -68,103 +69,6 @@ public class LevelGeneratorNew : MonoBehaviour {
 		start = generatedCol.points[generatedCol.pointCount - 1];
 
 		cam.SetOffset(roofOffset);
-
-		/* OLD STUFF
-		float xMin = generatedCol.transform.position.x;
-		float xMax = xMin + generatedMesh.GetComponent<MeshRenderer>().bounds.size.x;
-		float yMin = GetLowest(generatedCol.points, false);
-		float yMax = generatedCol2.transform.position.y + GetHighest(generatedCol2.points, false); */
-
-	}
-
-	void GenerateAnchors ( List<Vector2> myPoints, float distance )
-	{
-		float lastY = 0f;
-		float lastX = 0f;
-
-		for (int i = 0; i < myPoints.Count; i++)
-		{
-			float bottomPadding = 12f;
-			float topPadding = 8f;
-			float minY;
-			float maxY;
-			
-			// Lower
-			if ( i == 0 ) // first time
-			{
-				minY = myPoints[i].y + bottomPadding;
-				maxY = myPoints[i].y + (distance / 2) - topPadding;
-
-				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
-				//float x = myPoints[i].x;
-				float y = Random.Range( minY, maxY );
-				Vector3 pos = new Vector3( x, y, 0f );
-				Instantiate( anchorPrefab, pos, Quaternion.identity );
-				lastX = pos.x;
-				lastY = pos.y;
-			}
-			else if ( i % 4 == 0 )
-			{
-				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
-				//float x = myPoints[i].x;
-
-				minY = myPoints[i].y + bottomPadding;
-				maxY = myPoints[i].y + (distance / 2) - topPadding;
-
-				if ( lastY > minY + (distance / 4f) ) // above
-					maxY = lastY - topPadding;
-				else // under
-					minY = lastY + bottomPadding;
-
-				float y = Random.Range( minY, maxY );
-				Vector3 pos = new Vector3( x, y, 0f );
-				Instantiate( anchorPrefab, pos, Quaternion.identity );
-				lastX = pos.x;
-				lastY = pos.y;
-			}
-
-
-			// Upper
-			if (i == 0) // first time
-			{
-				minY = myPoints[i].y + (distance / 2) + bottomPadding;
-				maxY = myPoints[i].y + distance - topPadding;
-
-				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
-				//float x = myPoints[i].x;
-				float y = Random.Range(minY, maxY);
-				Vector3 pos = new Vector3(x, y, 0f);
-				Instantiate(anchorPrefab, pos, Quaternion.identity);
-				lastX = pos.x;
-				lastY = pos.y;
-			}
-			else if (i % 5 == 0)
-			{
-				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
-				//float x = myPoints[i].x;
-
-				minY = myPoints[i].y + (distance / 2) + bottomPadding;
-				maxY = myPoints[i].y + distance - topPadding;
-
-				if ( lastY > minY + (distance / 4f) ) // above
-					maxY = lastY - topPadding;
-				else // under
-					minY = lastY + bottomPadding;
-
-				float y = Random.Range(minY, maxY);
-				Vector3 pos = new Vector3(x, y, 0f);
-				Instantiate(anchorPrefab, pos, Quaternion.identity);
-				lastX = pos.x;
-				lastY = pos.y;
-			}
-		}
-	}
-
-	Vector3 RandomAround ( Vector3 origin, float minDist, float maxDist, float minAngle, float maxAngle )
-	{
-		Vector3 pos = Quaternion.AngleAxis( Random.Range( minAngle, maxAngle ) , Vector3.up ) * Vector3.forward;
-		pos = pos * Random.Range( minDist, maxDist );
-		return origin + pos;
 	}
 
 	Vector2[] RandomPoints ( Vector2 start, float width, Vector2[]points )
@@ -238,7 +142,6 @@ public class LevelGeneratorNew : MonoBehaviour {
 
 	EdgeCollider2D SpawnCol ( Vector2[] points, Vector2 pos, Quaternion rot, string name )
 	{
-		//GameObject spawnedCol = (GameObject)Instantiate( edgeColPrefab, pos, rot); trying pooling for now
 		EdgeCollider2D edge = RequestEdgeCol().GetComponent<EdgeCollider2D>();
 		edge.points = points;
 		edge.transform.position = pos;
@@ -248,7 +151,6 @@ public class LevelGeneratorNew : MonoBehaviour {
 	}
 	EdgeCollider2D SpawnCol( List<Vector2> points, Vector2 pos, Quaternion rot )
     {
-        //GameObject spawnedCol = (GameObject)Instantiate( edgeColPrefab, pos, rot); trying pooling for now
 		EdgeCollider2D edge = RequestEdgeCol().GetComponent<EdgeCollider2D>();
 		edge.points = points.ToArray();
 		edge.transform.position = pos;
@@ -302,7 +204,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 		//Define vertices
 		for (int i = 0; i < vertsCount; i++)
 		{
-			if (i % 2 == 0) // if i is even
+			if (i % 2 == 0) // if index is even
 			{
 				vertices[i] = shape.points[i / 2];
 				vertices[i + 1] = shape.points[i / 2] - myOffset;
@@ -330,7 +232,13 @@ public class LevelGeneratorNew : MonoBehaviour {
 			off += 1;
 		}
 
-		//define normals TEMP?
+		//TODO: Define UVs 
+		for (int i = 0; i < vertices.Length; i++)
+		{
+
+		}
+
+		//TODO: Define normals
 		for (int i = 0; i < vertsCount; i++)
 			normals[i] = Vector3.back;
 
@@ -355,6 +263,96 @@ public class LevelGeneratorNew : MonoBehaviour {
 		return meshObj;
 	}
 
+	void GenerateAnchors(List<Vector2> myPoints, float distance)
+	{
+		float lastY = 0f;
+		float lastX = 0f;
+
+		for (int i = 0; i < myPoints.Count; i++)
+		{
+			float bottomPadding = 12f;
+			float topPadding = 8f;
+			float minY;
+			float maxY;
+
+			// Lower
+			if (i == 0) // first time
+			{
+				minY = myPoints[i].y + bottomPadding;
+				maxY = myPoints[i].y + (distance / 2) - topPadding;
+
+				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
+				//float x = myPoints[i].x;
+				float y = Random.Range(minY, maxY);
+				Vector3 pos = new Vector3(x, y, 0f);
+				Instantiate(anchorPrefab, pos, Quaternion.identity);
+				lastX = pos.x;
+				lastY = pos.y;
+			}
+			else if (i % 4 == 0)
+			{
+				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
+				//float x = myPoints[i].x;
+
+				minY = myPoints[i].y + bottomPadding;
+				maxY = myPoints[i].y + (distance / 2) - topPadding;
+
+				if (lastY > minY + (distance / 4f)) // above
+					maxY = lastY - topPadding;
+				else // under
+					minY = lastY + bottomPadding;
+
+				float y = Random.Range(minY, maxY);
+				Vector3 pos = new Vector3(x, y, 0f);
+				Instantiate(anchorPrefab, pos, Quaternion.identity);
+				lastX = pos.x;
+				lastY = pos.y;
+			}
+
+
+			// Upper
+			if (i == 0) // first time
+			{
+				minY = myPoints[i].y + (distance / 2) + bottomPadding;
+				maxY = myPoints[i].y + distance - topPadding;
+
+				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
+				//float x = myPoints[i].x;
+				float y = Random.Range(minY, maxY);
+				Vector3 pos = new Vector3(x, y, 0f);
+				Instantiate(anchorPrefab, pos, Quaternion.identity);
+				lastX = pos.x;
+				lastY = pos.y;
+			}
+			else if (i % 5 == 0)
+			{
+				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
+				//float x = myPoints[i].x;
+
+				minY = myPoints[i].y + (distance / 2) + bottomPadding;
+				maxY = myPoints[i].y + distance - topPadding;
+
+				if (lastY > minY + (distance / 4f)) // above
+					maxY = lastY - topPadding;
+				else // under
+					minY = lastY + bottomPadding;
+
+				float y = Random.Range(minY, maxY);
+				Vector3 pos = new Vector3(x, y, 0f);
+				Instantiate(anchorPrefab, pos, Quaternion.identity);
+				lastX = pos.x;
+				lastY = pos.y;
+			}
+		}
+	}
+
+	Vector3 RandomAround(Vector3 origin, float minDist, float maxDist, float minAngle, float maxAngle)
+	{
+		Vector3 pos = Quaternion.AngleAxis(Random.Range(minAngle, maxAngle), Vector3.up) * Vector3.forward;
+		pos = pos * Random.Range(minDist, maxDist);
+		return origin + pos;
+	}
+
 	int ec = 0;
 	int ecLoop = 5;
 	GameObject RequestEdgeCol ()
@@ -376,61 +374,4 @@ public class LevelGeneratorNew : MonoBehaviour {
 		return meshes[mi];
 	}
 
-	float GetHighest ( Vector2[] points, bool RetX )
-	{
-		float x = points[0].x;
-		float y = points[0].y;
-		if (RetX)
-		{
-			for (int i = 0; i < points.Length; i++)
-			{
-				if (points[i].x > x)
-				{
-					x = points[i].x;
-				}
-			}
-			return x;
-		}
-		else
-		{
-			for (int i = 0; i < points.Length; i++)
-			{
-				if (points[i].y > y)
-				{
-					y = points[i].y;
-				}
-			}
-			return y;
-		}
-		
-	}
-
-	float GetLowest( Vector2[] points, bool RetX )
-	{
-		float x = points[0].x;
-		float y = points[0].y;
-		if (RetX)
-		{
-			for (int i = 0; i < points.Length; i++)
-			{
-				if (points[i].x < x)
-				{
-					x = points[i].x;
-				}
-			}
-			return x;
-		}
-		else
-		{
-			for (int i = 0; i < points.Length; i++)
-			{
-				if (points[i].y < y)
-				{
-					y = points[i].y;
-				}
-			}
-			return y;
-		}
-
-	}
 }

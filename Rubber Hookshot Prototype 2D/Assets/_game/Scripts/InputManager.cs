@@ -18,12 +18,10 @@ public class InputManager : MonoBehaviour {
 	float swithcMoveTimer = 1f;
 	bool switched = false;
 	bool useNewMove = true;
-	
 
 
 	void Start () 
 	{
-
 	}
 
 	void Update()
@@ -77,58 +75,20 @@ public class InputManager : MonoBehaviour {
 				Destroy(spawnedIndicator);
 
 			difs.Clear();
-
-			Vector2 origin = Camera.main.ScreenToWorldPoint( Input.mousePosition );
-			RaycastHit2D[] hits = Physics2D.RaycastAll( origin, Vector2.zero );
-
-			/*Vector2 origin = new Vector2( Camera.main.sc (Input.mousePosition) );
-			RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down);*/
-
-			spawnedIndicator = (GameObject)Instantiate(clickIndicator, origin, Quaternion.identity);
-
-			int index = 0;
-			float shortest= 999f;
-
-			for (int i = 0; i < hits.Length; i++)
+			MyRaycast();
+			/*if ( Camera.main.WorldToScreenPoint(Input.mousePosition).x < 1300f  )
 			{
-				Debug.Log(hits[i].transform.gameObject.tag);
-				if (hits[i].transform.gameObject.tag == "UI")
-					break;
-			}
-			for (int i = 0; i < hits.Length; i++)	
-			{
-				
-				if ( hits[i].collider && hits[i].collider.tag == "Anchor" && 
-					hits[i].collider.gameObject != activeAnchor && 
-					hits[i].collider.gameObject.GetComponentInChildren<Renderer>().isVisible )
+				if ( Camera.main.WorldToScreenPoint(Input.mousePosition ).y > 900f )
 				{
-					float dif =  Mathf.Abs( Vector2.Distance(origin, hits[i].collider.transform.position) );
-					difs.Add(dif);
-
-					if ( hits[i].collider )
-						print("collided with " + hits[i].collider.tag);
-					else
-						print("didn't collide with anything");
-
+					//yes
+					MyRaycast();
 				}
 			}
-
-			for (int i = 0; i < difs.Count; i++)
+			else
 			{
-				if ( shortest > difs[i])
-				{
-					shortest = difs[i];
-					index = i;
-				}
-			}
-
-			// HOOK HERE
-			if ( hits.Length != 0 )
-			{
-				player.GetComponent<Player2D>().Anchor(hits[index].transform.position);
-				activeAnchor = hits[index].collider.gameObject;
-
-			}
+				MyRaycast();
+			}*/
+			
 			
 		}
 		else if ( Input.GetMouseButton(0) && Input.GetMouseButton(1) && !Input.GetMouseButton(3) )
@@ -145,6 +105,64 @@ public class InputManager : MonoBehaviour {
 		if ( Input.GetMouseButtonUp(0) )
 		{
 			restartTimer = 0.5f;
+		}
+	}
+
+	void MyRaycast()
+	{
+		//Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+		Vector2 origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		RaycastHit2D[] hits = Physics2D.RaycastAll(origin, Vector2.zero);
+		bool hitUI = false;
+
+		/*Vector2 origin = new Vector2( Camera.main.sc (Input.mousePosition) );
+		RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down);*/
+
+		spawnedIndicator = (GameObject)Instantiate(clickIndicator, origin, Quaternion.identity);
+
+		int index = 0;
+		float shortest = 999f;
+
+		for (int i = 0; i < hits.Length; i++)
+		{
+			//Debug.Log(hits[i].transform.gameObject.tag);
+			if (hits[i].transform.gameObject.tag == "UI")
+				hitUI = true;
+				break;
+		}
+		for (int i = 0; i < hits.Length; i++)
+		{
+
+			if (hits[i].collider && hits[i].collider.tag == "Anchor" &&
+				hits[i].collider.gameObject != activeAnchor &&
+				hits[i].collider.gameObject.GetComponentInChildren<Renderer>().isVisible)
+			{
+				float dif = Mathf.Abs(Vector2.Distance(origin, hits[i].collider.transform.position));
+				difs.Add(dif);
+
+				if (hits[i].collider)
+					print("collided with " + hits[i].collider.tag);
+				else
+					print("didn't collide with anything");
+
+			}
+		}
+
+		for (int i = 0; i < difs.Count; i++)
+		{
+			if (shortest > difs[i])
+			{
+				shortest = difs[i];
+				index = i;
+			}
+		}
+
+		// HOOK HERE
+		if ( hits.Length != 0 && !hitUI )
+		{
+			player.GetComponent<Player2D>().Anchor(hits[index].transform.position);
+			activeAnchor = hits[index].collider.gameObject;
+
 		}
 	}
 
