@@ -77,7 +77,7 @@ public class Player2D : MonoBehaviour {
 				Death();
 			else
 				colliding = true;*/
-			Death ();
+			//Death ();
 		}
 			
 	}

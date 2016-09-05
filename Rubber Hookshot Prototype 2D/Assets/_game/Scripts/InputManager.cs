@@ -5,6 +5,7 @@ using System.Collections;
 public class InputManager : MonoBehaviour {
 
 	public GameObject player;
+	public GameObject cannon;
     //public GameObject player2;
     GameObject activeAnchor;
 
@@ -65,8 +66,38 @@ public class InputManager : MonoBehaviour {
 			restartTimer = 0.5f;
 		}
 
-	}
+		if ( Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) )	
+		{
+			player.transform.Rotate( Vector3.forward * Time.deltaTime * 500f );
+		}
+		else if ( Input.GetKey(KeyCode.RightArrow) )
+		{
+			player.transform.Rotate( Vector3.back * Time.deltaTime * 500f );
+		}
 
+		if ( Input.GetKeyDown(KeyCode.Space) )
+		{
+			Vector2 origin = cannon.transform.position;
+			RaycastHit2D hit = Physics2D.Raycast(origin, cannon.transform.right, 100f);
+
+			Debug.DrawRay( origin, cannon.transform.right * 100f, Color.red, 100f, false);
+
+			Debug.Log(hit.collider.tag);
+
+			if ( hit.collider.tag == "Anchor" )
+			{
+				player.GetComponent<Player2D>().Anchor(hit.transform.position);
+				activeAnchor = hit.collider.gameObject;
+			}
+			else if ( hit.collider.tag == "Wall" )
+			{
+				player.GetComponent<Player2D>().Anchor(hit.point);
+				activeAnchor = null;
+			}
+		}
+
+	}
+		
 	void NewMove()
 	{
 		if ( Input.GetMouseButtonDown(0)  )
