@@ -8,41 +8,58 @@ public class Player2D : MonoBehaviour {
 
 	Vector3 anchorPos = Vector3.zero;
 	Vector3 direction = Vector3.zero;
-	bool anchored = false;
-	public bool grounded = false;
-	bool colliding = false;
+	public bool anchored = false;
 
-	float thrust = 0f;
-	float distanceMultiplier;
-
+	float thrust;
 	float maxThrust = 10f;
-	float acceleration = 0f;
+	float maxAcc = 25f;
+	float acceleration;
+
+	float curVelX;
+	float curVelY;
+	float maxVel = 50f;
+
 
 	void Start ()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		lr = GetComponent<LineRenderer>();
 		gameObject.GetComponent<Renderer>().material.SetColor( "_EmissionColor", Color.cyan );
-		//Time.timeScale = 0.1f;
 	}
 
 	void Update ()
 	{
+		curVelX = Mathf.Abs(rb.velocity.x);
+		curVelY = Mathf.Abs(rb.velocity.y);
+		//Debug.Log(new Vector2(curVelX, curVelY));
 
 		if (anchored)
 		{
 			DrawRope();
-		
-			acceleration = direction.magnitude * 2f;
+			direction = anchorPos - transform.position;
+			acceleration = Mathf.Clamp(direction.magnitude, 0f, maxAcc) ;
 			if ( thrust < maxThrust )
-			{
 				thrust += acceleration * Time.deltaTime;
+
+			rb.AddForce(direction * thrust * Time.deltaTime * 30f, ForceMode2D.Force); // This might be better in fixed update w/o time.deltatime
+
+
+			if (curVelX > maxVel || curVelY > maxVel)
+			{
+				rb.drag += ( Mathf.Max(curVelX, curVelY) ) * Time.deltaTime;
+				rb.drag = Mathf.Clamp(rb.drag, 0f, 1.4f);
 			}
-
-			grounded = false;
-			colliding = false;
-
+			else
+			{
+				rb.drag = 0f;
+			}
 		}
+		else
+		{
+			rb.drag = 0f;
+		}
+		Debug.Log(rb.drag);
+			
 		/*else if (colliding && rb.velocity.x < 0.2f && rb.velocity.y < 0.2f)
 			grounded = true;
 		else
@@ -57,16 +74,14 @@ public class Player2D : MonoBehaviour {
 		//Debug.Log( Mathf.Abs(rb.velocity.x) + " " + Mathf.Abs(rb.velocity.y) );
 	}
 
-	void FixedUpdate () 
+	/*void FixedUpdate () 
 	{
 		if (anchored)
 		{
-			direction = anchorPos - transform.position;
-	
 			rb.AddForce(direction * thrust, ForceMode2D.Force);
 		}
 		
-	}
+	}*/
 
 	void OnCollisionEnter2D (Collision2D col)
 	{
@@ -78,6 +93,11 @@ public class Player2D : MonoBehaviour {
 			else
 				colliding = true;*/
 			//Death ();
+		}
+
+		if (col.collider.tag == "Wall")
+		{
+			UnAnchor();
 		}
 			
 	}

@@ -274,6 +274,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 			float topPadding = 8f;
 			float minY;
 			float maxY;
+			int myInt = 10;
 
 			// Lower
 			if (i == 0) // first time
@@ -289,7 +290,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 				lastX = pos.x;
 				lastY = pos.y;
 			}
-			else if (i % 4 == 0)
+			else if (i % myInt == 0)
 			{
 				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
 				//float x = myPoints[i].x;
@@ -324,7 +325,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 				lastX = pos.x;
 				lastY = pos.y;
 			}
-			else if (i % 5 == 0)
+			else if (i % myInt + 1 == 0)
 			{
 				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
 				//float x = myPoints[i].x;
