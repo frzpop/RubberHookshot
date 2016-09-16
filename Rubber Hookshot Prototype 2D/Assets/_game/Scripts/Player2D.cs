@@ -5,8 +5,8 @@ public class Player2D : MonoBehaviour {
 
 	Rigidbody2D rb;
 	LineRenderer lr;
-
-	Vector3 anchorPos = Vector3.zero;
+	public InputManager inputManager;
+	public Vector3 anchorPos = Vector3.zero;
 	Vector3 direction = Vector3.zero;
 	public bool anchored = false;
 
@@ -19,6 +19,7 @@ public class Player2D : MonoBehaviour {
 	float curVelY;
 	float maxVel = 50f;
 
+	bool ropeIsReset = false;
 
 	void Start ()
 	{
@@ -47,7 +48,7 @@ public class Player2D : MonoBehaviour {
 			if (curVelX > maxVel || curVelY > maxVel)
 			{
 				rb.drag += ( Mathf.Max(curVelX, curVelY) ) * Time.deltaTime;
-				rb.drag = Mathf.Clamp(rb.drag, 0f, 1.4f);
+				rb.drag = Mathf.Clamp(rb.drag, 0f, 1.15f);
 			}
 			else
 			{
@@ -57,53 +58,46 @@ public class Player2D : MonoBehaviour {
 		else
 		{
 			rb.drag = 0f;
+			if (!ropeIsReset)
+			{
+				ropeIsReset = true;
+				ResetRope();
+			}
 		}
-		Debug.Log(rb.drag);
+		//Debug.Log(rb.drag);
 			
-		/*else if (colliding && rb.velocity.x < 0.2f && rb.velocity.y < 0.2f)
-			grounded = true;
-		else
-		{
-			thrust = 0f;
-			grounded = false;
-			colliding = false;
-		}*/
-
 		ColorLerp( rb.velocity );
-
-		//Debug.Log( Mathf.Abs(rb.velocity.x) + " " + Mathf.Abs(rb.velocity.y) );
 	}
-
-	/*void FixedUpdate () 
-	{
-		if (anchored)
-		{
-			rb.AddForce(direction * thrust, ForceMode2D.Force);
-		}
-		
-	}*/
 
 	void OnCollisionEnter2D (Collision2D col)
 	{
 		if (col != null)
 		{
+			Debug.Log("Collided with: " + col.transform.tag);
 			/*Debug.Log( "Collided and VEL WAS:" + Mathf.Abs(rb.velocity.x) + ", " + Mathf.Abs(rb.velocity.y) );
 			if ( ( Mathf.Abs(rb.velocity.x) > 5f ) || ( Mathf.Abs(rb.velocity.y) > 5f) )
-				Death();
-			else
-				colliding = true;*/
-			//Death ();
-		}
+				Death();*/
 
-		if (col.collider.tag == "Wall")
+			//Death ();
+			if (col.collider.tag == "Wall")
+				inputManager.UnAnchor();
+		}	
+	}
+	void OnTriggerEnter2D ( Collider2D other )
+	{
+		//Debug.Log( "Triggered " + other.transform.tag );
+		if ( other.tag == "Spikes" )
 		{
-			UnAnchor();
+			Death();
 		}
-			
 	}
 
 	void DrawRope()
 	{
+		if (ropeIsReset)
+		{
+			ropeIsReset = false;
+		}
 		lr.SetPosition(0, transform.position);
 		lr.SetPosition(1, anchorPos);
 
@@ -119,12 +113,19 @@ public class Player2D : MonoBehaviour {
 
 	void Death()
 	{
-		//Destroy(gameObject);
-		Application.LoadLevel("LevelGeneratiorTest");
-
+		StartCoroutine("Deathy");
 	}
 
-	public void Anchor (Vector3 anchorPosition)
+	IEnumerator Deathy ()
+	{
+		gameObject.GetComponent<Renderer>().enabled = false;
+		Time.timeScale = 0.6f;
+		yield return new WaitForSeconds(0.8f);
+		Application.LoadLevel("LevelGeneratiorTest");
+		Time.timeScale = 1f;
+	}
+
+	/*public void Anchor (Vector3 anchorPosition)
 	{	
 		anchored = true;
 		anchorPos = anchorPosition;
@@ -139,6 +140,12 @@ public class Player2D : MonoBehaviour {
 			lr.SetPosition(1, Vector3.zero);
 		}
 		
+	}*/
+
+	void ResetRope ()
+	{
+		lr.SetPosition(0, Vector3.zero);
+		lr.SetPosition(1, Vector3.zero);
 	}
 
 	void ColorLerp ( Vector3 velocity )

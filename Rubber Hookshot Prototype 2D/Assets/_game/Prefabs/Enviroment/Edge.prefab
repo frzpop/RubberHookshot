@@ -9,7 +9,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 473402}
   - 68: {fileID: 6888228}
-  - 50: {fileID: 5059252}
   m_Layer: 0
   m_Name: Edge
   m_TagString: Wall
@@ -30,23 +29,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!50 &5059252
-Rigidbody2D:
-  serializedVersion: 2
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 167054}
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!68 &6888228
 EdgeCollider2D:
   m_ObjectHideFlags: 1

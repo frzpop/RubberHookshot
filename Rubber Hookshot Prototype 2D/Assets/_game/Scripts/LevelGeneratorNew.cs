@@ -100,7 +100,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 		return points;
     }
 
-	List<Vector2> MultiCurve( Vector2[] points, int res )
+	List<Vector2> MultiCurve ( Vector2[] points, int res )
 	{
 		Vector2 start = Vector2.zero;
 		Vector2 cp = Vector2.zero;
@@ -149,7 +149,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 		edge.name = name;
 		return edge;
 	}
-	EdgeCollider2D SpawnCol( List<Vector2> points, Vector2 pos, Quaternion rot )
+	EdgeCollider2D SpawnCol ( List<Vector2> points, Vector2 pos, Quaternion rot )
     {
 		EdgeCollider2D edge = RequestEdgeCol().GetComponent<EdgeCollider2D>();
 		edge.points = points.ToArray();
@@ -187,7 +187,7 @@ public class LevelGeneratorNew : MonoBehaviour {
         return pFinal;
     }
 
-	GameObject GenerateMesh2D( EdgeCollider2D shape, float height, Vector2 pos, Quaternion rot )
+	GameObject GenerateMesh2D ( EdgeCollider2D shape, float height, Vector2 pos, Quaternion rot )
 	{
 		int vertsInShape = shape.pointCount;
 		int vertsCount = vertsInShape * 2;
@@ -263,18 +263,18 @@ public class LevelGeneratorNew : MonoBehaviour {
 		return meshObj;
 	}
 
-	void GenerateAnchors(List<Vector2> myPoints, float distance)
+	void GenerateAnchors ( List<Vector2> myPoints, float distance )
 	{
 		float lastY = 0f;
 		float lastX = 0f;
+		float bottomPadding = 12f;
+		float topPadding = 8f;
 
 		for (int i = 0; i < myPoints.Count; i++)
 		{
-			float bottomPadding = 12f;
-			float topPadding = 8f;
 			float minY;
 			float maxY;
-			int myInt = 10;
+			int freq = 10; // a higher number will result in fewer anchors
 
 			// Lower
 			if (i == 0) // first time
@@ -290,11 +290,10 @@ public class LevelGeneratorNew : MonoBehaviour {
 				lastX = pos.x;
 				lastY = pos.y;
 			}
-			else if (i % myInt == 0)
+			else if (i % freq == 0)
 			{
 				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
-				//float x = myPoints[i].x;
-
+				
 				minY = myPoints[i].y + bottomPadding;
 				maxY = myPoints[i].y + (distance / 2) - topPadding;
 
@@ -310,7 +309,6 @@ public class LevelGeneratorNew : MonoBehaviour {
 				lastY = pos.y;
 			}
 
-
 			// Upper
 			if (i == 0) // first time
 			{
@@ -318,17 +316,15 @@ public class LevelGeneratorNew : MonoBehaviour {
 				maxY = myPoints[i].y + distance - topPadding;
 
 				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
-				//float x = myPoints[i].x;
 				float y = Random.Range(minY, maxY);
 				Vector3 pos = new Vector3(x, y, 0f);
 				Instantiate(anchorPrefab, pos, Quaternion.identity);
 				lastX = pos.x;
 				lastY = pos.y;
 			}
-			else if (i % myInt + 1 == 0)
+			else if (i % freq + 1 == 0)
 			{
 				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
-				//float x = myPoints[i].x;
 
 				minY = myPoints[i].y + (distance / 2) + bottomPadding;
 				maxY = myPoints[i].y + distance - topPadding;
@@ -345,6 +341,12 @@ public class LevelGeneratorNew : MonoBehaviour {
 				lastY = pos.y;
 			}
 		}
+	}
+
+
+	void GenerateObstacles ( float difficulty )
+	{
+
 	}
 
 	Vector3 RandomAround(Vector3 origin, float minDist, float maxDist, float minAngle, float maxAngle)
