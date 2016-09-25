@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class LevelGeneratorNew : MonoBehaviour {
 
-	public GameObject indicator;
 	public CameraFollow cam;
 	public GameObject edgeColPrefab;
 	public GameObject meshPrefab;
@@ -27,7 +26,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 
 	public List<Vector3> positions;
 
-	void Start ()
+	void Awake ()
     {
 		//Initialize meshes pool
 		for (int i = 0; i < meshes.Length; i++)
@@ -400,6 +399,15 @@ public class LevelGeneratorNew : MonoBehaviour {
 			mi = 0;
 
 		return meshes[mi];
+	}
+
+	public float[] GetColVertsX ()
+	{
+		float[] myArray = new float[generatedCol.edgeCount];
+		for (int i = 0; i < generatedCol.edgeCount; i++) 
+			myArray [i] = generatedCol.points[i].x;
+
+		return myArray;
 	}
 
 }
