@@ -10,6 +10,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 	public GameObject meshPrefab;
 	public GameObject anchorPrefab;
 	public GameObject checkPointPrefab;
+	public GameObject obstaclePrefab;
 
 	Vector2 start = Vector2.zero;
 	EdgeCollider2D generatedCol;
@@ -19,7 +20,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 	GameObject[] edgeCols = new GameObject[6];
 	GameObject[] meshes = new GameObject[6];
 
-	Vector2[] myPoints = new Vector2[7];
+	Vector2[] myPoints = new Vector2[7]; // higher number increases "curviness". Also affects edgeCount
 
 	float roofOffset = 85f;
 	float meshHeight = 60f;
@@ -45,7 +46,8 @@ public class LevelGeneratorNew : MonoBehaviour {
 		Vector2[] randomPoints = RandomPoints( start, 300f, myPoints );
 	
 		//make points into a curve
-		List<Vector2> curveVerts = MultiCurve(randomPoints, 14);
+		int res = 20; // Highter number increases edgeCount;
+		List<Vector2> curveVerts = MultiCurve(randomPoints, res);
 	
 		//Generate colission using curve vertices
 		generatedCol = SpawnCol ( curveVerts, Vector2.zero, Quaternion.identity );
@@ -58,7 +60,10 @@ public class LevelGeneratorNew : MonoBehaviour {
 		generatedMesh2 = GenerateMesh2D( generatedCol, meshHeight, generatedCol.transform.position + heightOffsetMesh, Quaternion.identity );
 
 		//Generate anchors
-		GenerateAnchors(curveVerts, roofOffset);
+		GenerateAnchors( curveVerts, roofOffset );
+
+		//Generate Obstacles
+		GenerateObstacles ( curveVerts, roofOffset, 0.05f );
 
 		//Spawn a checkpoint
 		Vector3 cpPos = new Vector3( start.x + ( generatedMesh.GetComponent<MeshRenderer>().bounds.size.x * 0.66f ) , start.y, -0.1f );
@@ -266,7 +271,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 	void GenerateAnchors ( List<Vector2> myPoints, float distance )
 	{
 		float lastY = 0f;
-		float lastX = 0f;
+		float lastX = 0f; // might not be needed
 		float bottomPadding = 12f;
 		float topPadding = 8f;
 
@@ -274,7 +279,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 		{
 			float minY;
 			float maxY;
-			int freq = 10; // a higher number will result in fewer anchors
+			int freq = 7; // a higher number will result in fewer anchors
 
 			// Lower
 			if (i == 0) // first time
@@ -342,11 +347,31 @@ public class LevelGeneratorNew : MonoBehaviour {
 			}
 		}
 	}
-
-
-	void GenerateObstacles ( float difficulty )
+		
+	void GenerateObstacles ( List<Vector2> myPoints, float distance, float difi )
 	{
+		float minY;
+		float maxY;
+		float padding = 10f;
+		int divide = 20;
 
+		int amount = myPoints.Count / divide;
+		int myIndex = 0;
+		Vector3 myPos;
+		GameObject spawnedObs;
+
+		for (int i = 0; i < amount; i++) 
+		{
+			myIndex += divide;
+			minY = myPoints[myIndex].y + padding;
+			maxY = myPoints[myIndex].y + distance - padding;
+
+			float x = myPoints[myIndex].x + Random.Range(-10f, 10f);
+			float y = Random.Range (minY, maxY);
+			myPos = new Vector3 ( x, y, -0.1f );
+			spawnedObs = (GameObject)Instantiate( obstaclePrefab, myPos, Quaternion.identity);
+			spawnedObs.GetComponent<Obstacle> ().Spiked (difi);
+		}	
 	}
 
 	Vector3 RandomAround(Vector3 origin, float minDist, float maxDist, float minAngle, float maxAngle)

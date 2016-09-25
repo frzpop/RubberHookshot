@@ -3,23 +3,40 @@ using System.Collections;
 
 public class Player2D : MonoBehaviour {
 
+
+	public InputManager inputManager;
+	public Vector3 		anchorPos = Vector3.zero;
+	public GameObject 	smallBallPrefab;
+	public bool 		anchored = false;
+	public bool 		dead = false;
+
 	Rigidbody2D rb;
 	LineRenderer lr;
-	public InputManager inputManager;
-	public Vector3 anchorPos = Vector3.zero;
 	Vector3 direction = Vector3.zero;
-	public bool anchored = false;
 
-	float thrust;
-	float maxThrust = 10f;
-	float maxAcc = 25f;
-	float acceleration;
+	// Shield
+	static int shieldCharges = 3;
+	static float chargeDelay = 0.75f;
+	static float chargeTime = 0.85f;
+	float chargeTimer = 0f;
+	float delayTimer = 0f;
+	bool waitingToCharge = false;
+	bool charging = false;
+	bool charged = true;
 
-	float curVelX;
-	float curVelY;
-	float maxVel = 50f;
+	// Movement
+	static float 	maxThrust = 8f;
+	static float 	maxAcc = 8f;
+	static float	maxVel = 40f;
+	float 			thrust;
+	float			acceleration;
+	float			curVelX;
+	float			curVelY;
+
 
 	bool ropeIsReset = false;
+
+	Color color;
 
 	void Start ()
 	{
@@ -34,16 +51,25 @@ public class Player2D : MonoBehaviour {
 		curVelY = Mathf.Abs(rb.velocity.y);
 		//Debug.Log(new Vector2(curVelX, curVelY));
 
-		if (anchored)
+		if (shieldCharges == 3)
+			color = Color.green;
+		else if (shieldCharges == 2)
+			color = Color.yellow;
+		else if (shieldCharges == 1)
+			color = Color.red;
+
+			gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", color);
+
+		if ( anchored && !dead )
 		{
 			DrawRope();
+
 			direction = anchorPos - transform.position;
 			acceleration = Mathf.Clamp(direction.magnitude, 0f, maxAcc) ;
 			if ( thrust < maxThrust )
 				thrust += acceleration * Time.deltaTime;
 
 			rb.AddForce(direction * thrust * Time.deltaTime * 30f, ForceMode2D.Force); // This might be better in fixed update w/o time.deltatime
-
 
 			if (curVelX > maxVel || curVelY > maxVel)
 			{
@@ -66,21 +92,48 @@ public class Player2D : MonoBehaviour {
 		}
 		//Debug.Log(rb.drag);
 			
-		ColorLerp( rb.velocity );
+		//ColorLerp( rb.velocity );
+
+		if ( waitingToCharge )
+		{
+			delayTimer += Time.deltaTime;
+			if ( delayTimer >= chargeDelay )
+			{
+				delayTimer = 0f;
+				waitingToCharge = false;
+				charging = true;
+			}
+		}
+		else if ( charging )
+		{
+			chargeTimer += Time.deltaTime;
+			if ( chargeTimer >= chargeTime )
+			{
+				chargeTimer = 0f;
+				shieldCharges++;
+				if ( shieldCharges == 3 )
+					charging = false;
+			}
+		}
 	}
 
-	void OnCollisionEnter2D (Collision2D col)
+	void OnCollisionEnter2D ( Collision2D col )
 	{
 		if (col != null)
 		{
-			Debug.Log("Collided with: " + col.transform.tag);
-			/*Debug.Log( "Collided and VEL WAS:" + Mathf.Abs(rb.velocity.x) + ", " + Mathf.Abs(rb.velocity.y) );
-			if ( ( Mathf.Abs(rb.velocity.x) > 5f ) || ( Mathf.Abs(rb.velocity.y) > 5f) )
-				Death();*/
-
-			//Death ();
 			if (col.collider.tag == "Wall")
 				inputManager.UnAnchor();
+			
+			//Debug.Log("Collided with: " + col.transform.tag);
+			//Debug.Log( "Collided and VEL WAS:" + Mathf.Abs(rb.velocity.x) + ", " + Mathf.Abs(rb.velocity.y) );
+			if ((Mathf.Abs (rb.velocity.x) > 5f) || (Mathf.Abs (rb.velocity.y) > 5f)) 
+			{
+				ShieldHit();
+				if (col.collider.tag == "Wall")
+					inputManager.UnAnchor();
+			}
+				
+
 		}	
 	}
 	void OnTriggerEnter2D ( Collider2D other )
@@ -91,6 +144,67 @@ public class Player2D : MonoBehaviour {
 			Death();
 		}
 	}
+
+	void ShieldHit ()
+	{
+		shieldCharges--;
+		if (shieldCharges == 0)
+			Death ();
+		else 
+		{
+			waitingToCharge = true;
+			chargeTimer = 0f;
+			charging = false;
+		}
+	}
+		
+	void Death()
+	{
+		if ( !dead )
+		StartCoroutine("Deathy");
+	}
+
+	IEnumerator Deathy ()
+	{
+		dead = true;
+		BallExplosion (25);
+		gameObject.GetComponent<Renderer>().enabled = false;
+		gameObject.transform.GetChild(0).GetComponent<Renderer> ().enabled = false;
+		gameObject.transform.GetChild(0).GetComponent<LineRenderer> ().enabled = false;
+		Time.timeScale = 1f;
+		yield return new WaitForSeconds(1.5f);
+		shieldCharges = 3;
+		Time.timeScale = 1f;
+		Application.LoadLevel("LevelGeneratiorTest");
+	}
+
+	void BallExplosion ( int amount )
+	{
+		GameObject spawnedBall;
+		for (int i = 0; i < amount; i++) 
+		{
+			Vector2 force = new Vector2 ( Random.Range( 50f, 100f ), Random.Range( 50f, 100f ) );
+			spawnedBall = (GameObject)Instantiate ( smallBallPrefab, gameObject.transform.position, Quaternion.identity );
+			spawnedBall.GetComponent<Rigidbody2D>().AddForce ( force, ForceMode2D.Impulse );
+		}
+	}
+
+	/*public void Anchor (Vector3 anchorPosition)
+	{	
+		anchored = true;
+		anchorPos = anchorPosition;
+	}
+
+	public void UnAnchor ()
+	{
+		if ( anchored )
+		{
+			anchored = false;
+			lr.SetPosition(0, Vector3.zero);
+			lr.SetPosition(1, Vector3.zero);
+		}
+		
+	}*/
 
 	void DrawRope()
 	{
@@ -110,37 +224,6 @@ public class Player2D : MonoBehaviour {
 
 		lr.SetWidth( Mathf.Lerp( min, max, alphaMagnitude), Mathf.Lerp( min, max, alphaMagnitude) );
 	}
-
-	void Death()
-	{
-		StartCoroutine("Deathy");
-	}
-
-	IEnumerator Deathy ()
-	{
-		gameObject.GetComponent<Renderer>().enabled = false;
-		Time.timeScale = 0.6f;
-		yield return new WaitForSeconds(0.8f);
-		Application.LoadLevel("LevelGeneratiorTest");
-		Time.timeScale = 1f;
-	}
-
-	/*public void Anchor (Vector3 anchorPosition)
-	{	
-		anchored = true;
-		anchorPos = anchorPosition;
-	}
-
-	public void UnAnchor ()
-	{
-		if ( anchored )
-		{
-			anchored = false;
-			lr.SetPosition(0, Vector3.zero);
-			lr.SetPosition(1, Vector3.zero);
-		}
-		
-	}*/
 
 	void ResetRope ()
 	{
@@ -169,7 +252,7 @@ public class Player2D : MonoBehaviour {
 		
 	}
 
-	float Remap ( this float value, float from1, float to1, float from2, float to2 )
+	float Remap ( float value, float from1, float to1, float from2, float to2 )
 	{
 		return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
 	}

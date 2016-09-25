@@ -25,7 +25,6 @@ public class CameraFollow : MonoBehaviour {
 
 	float offset; // This is the difference in Y between ground and roof.
 
-
 	//Vector3 follow;
 
 	void Start ()
