@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 1e15365e6c97d4ab88c9a1ea540635fb
+timeCreated: 1502646933
+licenseType: Pro
+NativeFormatImporter:
+  mainObjectFileID: 11400000
+  userData: <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 530 486"><defs><style>.cls-1{fill:#f7ae2f;}.cls-2{fill:#999;}.cls-3{fill:#ffb535;}</style></defs><title>mountain-tall-3</title><polyline
+    class="cls-1" points="0 486 368 486 494 486 276 0"/><line class="cls-2" x1="276"
+    y2="486"/><polyline class="cls-3" points="276 0 530 486 403 486 339.5 243 301
+    261.4 317.6 159.2 276 0"/></svg>
+  assetBundleName: 
+  assetBundleVariant: 

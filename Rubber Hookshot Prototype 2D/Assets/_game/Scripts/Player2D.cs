@@ -6,12 +6,11 @@ public class Player2D : MonoBehaviour {
 
 	public InputManager inputManager;
 	public Vector3 		anchorPos = Vector3.zero;
-	public GameObject 	smallBallPrefab;
 	public bool 		anchored = false;
 	public bool 		dead = false;
 
 	Rigidbody2D rb;
-	LineRenderer lr;
+	LineRenderer lineRend;
 	Vector3 direction = Vector3.zero;
 
 	// Shield
@@ -33,7 +32,6 @@ public class Player2D : MonoBehaviour {
 	float			curVelX;
 	float			curVelY;
 
-
 	bool ropeIsReset = false;
 
 	Color color;
@@ -41,7 +39,7 @@ public class Player2D : MonoBehaviour {
 	void Start ()
 	{
 		rb = GetComponent<Rigidbody2D>();
-		lr = GetComponent<LineRenderer>();
+		lineRend = GetComponent<LineRenderer>();
 		gameObject.GetComponent<Renderer>().material.SetColor( "_EmissionColor", Color.cyan );
 	}
 
@@ -160,51 +158,9 @@ public class Player2D : MonoBehaviour {
 		
 	void Death()
 	{
-		if ( !dead )
-		StartCoroutine("Deathy");
-	}
-
-	IEnumerator Deathy ()
-	{
-		dead = true;
-		BallExplosion (25);
-		gameObject.GetComponent<Renderer>().enabled = false;
-		gameObject.transform.GetChild(0).GetComponent<Renderer> ().enabled = false;
-		gameObject.transform.GetChild(0).GetComponent<LineRenderer> ().enabled = false;
-		Time.timeScale = 1f;
-		yield return new WaitForSeconds(1.5f);
 		shieldCharges = 3;
-		Time.timeScale = 1f;
 		Application.LoadLevel("LevelGeneratiorTest");
 	}
-
-	void BallExplosion ( int amount )
-	{
-		GameObject spawnedBall;
-		for (int i = 0; i < amount; i++) 
-		{
-			Vector2 force = new Vector2 ( Random.Range( 50f, 100f ), Random.Range( 50f, 100f ) );
-			spawnedBall = (GameObject)Instantiate ( smallBallPrefab, gameObject.transform.position, Quaternion.identity );
-			spawnedBall.GetComponent<Rigidbody2D>().AddForce ( force, ForceMode2D.Impulse );
-		}
-	}
-
-	/*public void Anchor (Vector3 anchorPosition)
-	{	
-		anchored = true;
-		anchorPos = anchorPosition;
-	}
-
-	public void UnAnchor ()
-	{
-		if ( anchored )
-		{
-			anchored = false;
-			lr.SetPosition(0, Vector3.zero);
-			lr.SetPosition(1, Vector3.zero);
-		}
-		
-	}*/
 
 	void DrawRope()
 	{
@@ -212,8 +168,8 @@ public class Player2D : MonoBehaviour {
 		{
 			ropeIsReset = false;
 		}
-		lr.SetPosition(0, transform.position);
-		lr.SetPosition(1, anchorPos);
+		lineRend.SetPosition(0, transform.position);
+		lineRend.SetPosition(1, anchorPos);
 
 		float currentDistance = (transform.position - anchorPos).magnitude;
 		float clampedDistance = Mathf.Clamp(currentDistance, 2f, 18f);
@@ -222,13 +178,13 @@ public class Player2D : MonoBehaviour {
 		float min = gameObject.transform.localScale.x * 0.08f;
 		float max = gameObject.transform.localScale.x * 0.35f;
 
-		lr.SetWidth( Mathf.Lerp( min, max, alphaMagnitude), Mathf.Lerp( min, max, alphaMagnitude) );
+		lineRend.SetWidth( Mathf.Lerp( min, max, alphaMagnitude), Mathf.Lerp( min, max, alphaMagnitude) );
 	}
 
 	void ResetRope ()
 	{
-		lr.SetPosition(0, Vector3.zero);
-		lr.SetPosition(1, Vector3.zero);
+		lineRend.SetPosition(0, Vector3.zero);
+		lineRend.SetPosition(1, Vector3.zero);
 	}
 
 	void ColorLerp ( Vector3 velocity )

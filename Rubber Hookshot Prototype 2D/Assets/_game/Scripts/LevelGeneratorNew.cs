@@ -10,14 +10,16 @@ public class LevelGeneratorNew : MonoBehaviour {
 	public GameObject anchorPrefab;
 	public GameObject checkPointPrefab;
 	public GameObject obstaclePrefab;
+	public GameObject[] edgeCols;
+	public GameObject[] meshes;
+	public Transform levelObjectsParent;
+	public Transform backgroundParent;
 
 	Vector2 start = Vector2.zero;
 	EdgeCollider2D generatedCol;
 	EdgeCollider2D generatedCol2;
 	GameObject generatedMesh;
 	GameObject generatedMesh2;
-	GameObject[] edgeCols = new GameObject[6];
-	GameObject[] meshes = new GameObject[6];
 
 	Vector2[] myPoints = new Vector2[7]; // higher number increases "curviness". Also affects edgeCount
 
@@ -28,14 +30,6 @@ public class LevelGeneratorNew : MonoBehaviour {
 
 	void Awake ()
     {
-		//Initialize meshes pool
-		for (int i = 0; i < meshes.Length; i++)
-			meshes[i] = (GameObject)Instantiate( meshPrefab, new Vector3( -1000f, -1000f, 0f ), Quaternion.identity );
-	
-		//Initialize edgeCols pool
-		for (int i = 0; i < edgeCols.Length; i++)
-			edgeCols[i] = (GameObject)Instantiate( edgeColPrefab, new Vector3( -1000f, -1000f, 0f ), Quaternion.identity );
-
 		GenerateLevel();
 	}
 
@@ -66,7 +60,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 
 		//Spawn a checkpoint
 		Vector3 cpPos = new Vector3( start.x + ( generatedMesh.GetComponent<MeshRenderer>().bounds.size.x * 0.66f ) , start.y, -0.1f );
-		GameObject cp =  (GameObject)Instantiate( checkPointPrefab, cpPos, Quaternion.identity );
+		GameObject cp =  Instantiate( checkPointPrefab, cpPos, Quaternion.identity, levelObjectsParent );
 		cp.GetComponent<CheckPoint>().SetLevelGenerator( gameObject.GetComponent<LevelGeneratorNew>() );
 
 		//Set next start position 
@@ -75,7 +69,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 		cam.SetOffset(roofOffset);
 	}
 
-	Vector2[] RandomPoints ( Vector2 start, float width, Vector2[]points )
+	Vector2[] RandomPoints ( Vector2 startPoint, float width, Vector2[]points )
     {
         Vector2 prevPoint = Vector2.zero;
         float increase = width / ( points.Length - 1 );
@@ -86,7 +80,7 @@ public class LevelGeneratorNew : MonoBehaviour {
         {
             if ( i == 0 )
             {
-                points[i] = start;
+                points[i] = startPoint;
                 prevPoint = points[i];           
             }
             else
@@ -290,7 +284,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 				//float x = myPoints[i].x;
 				float y = Random.Range(minY, maxY);
 				Vector3 pos = new Vector3(x, y, 0f);
-				Instantiate(anchorPrefab, pos, Quaternion.identity);
+				Instantiate( anchorPrefab, pos, Quaternion.identity, levelObjectsParent );
 				lastX = pos.x;
 				lastY = pos.y;
 			}
@@ -308,7 +302,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 
 				float y = Random.Range(minY, maxY);
 				Vector3 pos = new Vector3(x, y, 0f);
-				Instantiate(anchorPrefab, pos, Quaternion.identity);
+				Instantiate( anchorPrefab, pos, Quaternion.identity, levelObjectsParent );
 				lastX = pos.x;
 				lastY = pos.y;
 			}
@@ -322,7 +316,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 				float x = myPoints[i].x + Random.Range(-1.75f, 1.75f);
 				float y = Random.Range(minY, maxY);
 				Vector3 pos = new Vector3(x, y, 0f);
-				Instantiate(anchorPrefab, pos, Quaternion.identity);
+				Instantiate( anchorPrefab, pos, Quaternion.identity, levelObjectsParent );
 				lastX = pos.x;
 				lastY = pos.y;
 			}
@@ -340,7 +334,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 
 				float y = Random.Range(minY, maxY);
 				Vector3 pos = new Vector3(x, y, 0f);
-				Instantiate(anchorPrefab, pos, Quaternion.identity);
+				Instantiate( anchorPrefab, pos, Quaternion.identity, levelObjectsParent );
 				lastX = pos.x;
 				lastY = pos.y;
 			}
@@ -368,7 +362,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 			float x = myPoints[myIndex].x + Random.Range(-10f, 10f);
 			float y = Random.Range (minY, maxY);
 			myPos = new Vector3 ( x, y, -0.1f );
-			spawnedObs = (GameObject)Instantiate( obstaclePrefab, myPos, Quaternion.identity);
+			spawnedObs = Instantiate( obstaclePrefab, myPos, Quaternion.identity, levelObjectsParent );
 			spawnedObs.GetComponent<Obstacle> ().Spiked (difi);
 		}	
 	}
