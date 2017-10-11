@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: c2d316ab2658f439dbf9821bf6e7788c
+timeCreated: 1507663907
+licenseType: Pro
+NativeFormatImporter:
+  mainObjectFileID: 11400000
+  userData: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122 122"><defs><style>.cls-1{fill:#e532b0;}.cls-2{fill:#d714a5;}</style></defs><title>PlayerBall</title><g
+    id="Inner"><circle class="cls-1" cx="61" cy="61" r="61"/></g><g id="Shadow"><path
+    class="cls-2" d="M178,127.1a60.9,60.9,0,0,1-51.1-94.2,61,61,0,1,0,84.3,84.3A60.6,60.6,0,0,1,178,127.1Z"
+    transform="translate(-99 -23.2)"/></g></svg>
+  assetBundleName: 
+  assetBundleVariant: 
