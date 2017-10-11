@@ -6,7 +6,6 @@ public class InputManager : MonoBehaviour {
 
 	public static InputManager input;
 
-	public GameObject cannon;
 
 	// Camera
 	Camera cam;
@@ -44,9 +43,9 @@ public class InputManager : MonoBehaviour {
 	void UpdateInput ()
 	{
 		if ( Input.GetKey( KeyCode.LeftArrow ) && !Input.GetKey( KeyCode.RightArrow ) )
-			RotateBallLeftEditor();
+			Player2D.player.RotateBallLeftEditor();
 		else if ( Input.GetKey( KeyCode.RightArrow ) )
-			RotateBallRightEditor();
+			Player2D.player.RotateBallRightEditor();
 
 		if ( Input.GetKeyDown( KeyCode.Space ) )
 			RaycastForAnchor();
@@ -60,22 +59,13 @@ public class InputManager : MonoBehaviour {
 		if (CnInputManager.GetButtonDown("Fire3"))
 			Application.LoadLevel("LevelGeneratiorTest");
 	}
-
-
-	void RotateBallLeftEditor()
-	{
-		Player2D.player.transform.Rotate( Vector3.forward* Time.deltaTime * 500f );
-	}
-	void RotateBallRightEditor()
-	{
-		Player2D.player.transform.Rotate( Vector3.back* Time.deltaTime * 500f );
-	}
-
+		
 	public void RaycastForAnchor()
 	{
-		Vector2 origin = cannon.transform.position;
-		RaycastHit2D[] hits = Physics2D.RaycastAll( origin, cannon.transform.right, 1000f );
-		Debug.DrawRay( origin, cannon.transform.right* 100f, Color.red, 5f, false);
+		Player2D player = Player2D.player;
+		Vector2 origin = player.transform.position;
+		RaycastHit2D[] hits = Physics2D.RaycastAll( origin, player.outline.right, 1000f );
+		Debug.DrawRay( origin, player.outline.right * 100f, Color.red, 5f, false);
 
 		if ( hits == null )
 			return;

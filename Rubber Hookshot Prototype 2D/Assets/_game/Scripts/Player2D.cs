@@ -4,13 +4,14 @@ public class Player2D : MonoBehaviour {
 
 	public static Player2D player;
 
-	public GameObject 	activeAnchor;
-	public Vector3 		anchorPos = Vector3.zero;
+	public Transform outline;
 	public bool 		isAnchored;
 	public bool 		isDead;
+	public GameObject 	activeAnchor;
 
 	Rigidbody2D rb;
 	LineRenderer lineRend;
+	Vector3 anchorPos = Vector3.zero;
 	Vector3 direction = Vector3.zero;
 	bool ropeIsReset;
 
@@ -96,8 +97,17 @@ public class Player2D : MonoBehaviour {
 
 	public void Rotate( float x, float y )
 	{
-		transform.eulerAngles =
+		outline.eulerAngles =
 			new Vector3( transform.eulerAngles.x, transform.eulerAngles.y, Mathf.Atan2( y, x ) * Mathf.Rad2Deg );
+	}
+
+	public void RotateBallLeftEditor()
+	{
+		outline.Rotate( Vector3.forward* Time.deltaTime * 500f );
+	}
+	public void RotateBallRightEditor()
+	{
+		outline.Rotate( Vector3.back* Time.deltaTime * 500f );
 	}
 
 	void RechargeHits()
