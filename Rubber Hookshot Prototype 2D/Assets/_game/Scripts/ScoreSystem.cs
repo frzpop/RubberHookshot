@@ -6,7 +6,7 @@ public class ScoreSystem : MonoBehaviour {
 
 	public static ScoreSystem ss;
 
-	public LevelGeneratorNew levelGenScr;
+	public LevelGenerator levelGenScr;
 	public Text scoreText;
 	int currentScore;
 	int scoreIndex;

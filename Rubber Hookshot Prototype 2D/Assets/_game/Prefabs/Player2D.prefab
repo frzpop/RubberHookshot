@@ -19,7 +19,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4381950305550168}
-  - component: {fileID: 210325341809617668}
   - component: {fileID: 114431693647195196}
   - component: {fileID: 33128987589973978}
   - component: {fileID: 23162001553399312}
@@ -29,7 +28,7 @@ GameObject:
   - component: {fileID: 114507727317939564}
   m_Layer: 0
   m_Name: Player2D
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,9 +139,9 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1213351723
+  m_SortingLayer: -1
+  m_SortingOrder: 1
 --- !u!23 &23543916437092880
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -204,8 +203,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1213351723
+  m_SortingLayer: -1
   m_SortingOrder: 0
 --- !u!33 &33128987589973978
 MeshFilter:
@@ -280,8 +279,8 @@ MonoBehaviour:
   _color: {r: 1, g: 1, b: 1, a: 1}
   _opaqueMaterial: {fileID: 0}
   _transparentMaterial: {fileID: 0}
-  _sortingLayerID: 0
-  _sortingLayerName: 
+  _sortingLayerID: 1213351723
+  _sortingLayerName: Player
   _sortingOrder: 0
   _overrideSorter: 0
   _overrideSorterChildren: 0
@@ -302,9 +301,9 @@ MonoBehaviour:
   _color: {r: 1, g: 1, b: 1, a: 1}
   _opaqueMaterial: {fileID: 0}
   _transparentMaterial: {fileID: 0}
-  _sortingLayerID: 0
-  _sortingLayerName: 
-  _sortingOrder: 0
+  _sortingLayerID: 1213351723
+  _sortingLayerName: Player
+  _sortingOrder: 1
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114507727317939564
@@ -318,10 +317,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e920bc4877719bf46aa3bb51f1ac6202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputManager: {fileID: 0}
-  anchorPos: {x: 0, y: 0, z: 0}
-  anchored: 0
-  dead: 0
+  outline: {fileID: 4128718404079428}
+  isAnchored: 0
+  isDead: 0
+  activeAnchor: {fileID: 0}
 --- !u!120 &120197290848366006
 LineRenderer:
   m_ObjectHideFlags: 1
@@ -506,13 +505,3 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 0
   m_Loop: 0
---- !u!210 &210325341809617668
-SortingGroup:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1232981749440920}
-  m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0

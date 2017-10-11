@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class LevelGeneratorNew : MonoBehaviour {
+public class LevelGenerator : MonoBehaviour {
+
+	public static LevelGenerator lg;
 
 	public CameraFollow cam;
 	public GameObject edgeColPrefab;
@@ -30,6 +32,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 
 	void Awake ()
     {
+		lg = this;
 		GenerateLevel();
 	}
 
@@ -40,7 +43,7 @@ public class LevelGeneratorNew : MonoBehaviour {
 	
 		//make points into a curve
 		int res = 20; // Highter number increases edgeCount;
-		List<Vector2> curveVerts = MultiCurve(randomPoints, res);
+		List<Vector2> curveVerts = MultiCurve( randomPoints, res );
 	
 		//Generate colission using curve vertices
 		generatedCol = SpawnCol ( curveVerts, Vector2.zero, Quaternion.identity );
@@ -59,9 +62,8 @@ public class LevelGeneratorNew : MonoBehaviour {
 		GenerateObstacles ( curveVerts, roofOffset, 0.05f );
 
 		//Spawn a checkpoint
-		Vector3 cpPos = new Vector3( start.x + ( generatedMesh.GetComponent<MeshRenderer>().bounds.size.x * 0.66f ) , start.y, -0.1f );
-		GameObject cp =  Instantiate( checkPointPrefab, cpPos, Quaternion.identity, levelObjectsParent );
-		cp.GetComponent<CheckPoint>().SetLevelGenerator( gameObject.GetComponent<LevelGeneratorNew>() );
+		Vector3 cpPos = new Vector3( start.x + ( generatedMesh.GetComponent<MeshRenderer>().bounds.size.x * 0.5f ) , start.y, -0.1f );
+		Instantiate( checkPointPrefab, cpPos, Quaternion.identity, levelObjectsParent );
 
 		//Set next start position 
 		start = generatedCol.points[generatedCol.pointCount - 1];
@@ -113,7 +115,6 @@ public class LevelGeneratorNew : MonoBehaviour {
 				cp = points[i + 1];
 				end = (cp + points[i + 2]) / 2;
 
-				//SpawnCol( ( GeneratePoints(start, cp, end, points.Length) ), start, Quaternion.identity, "1" ); // Used for separate objects.
 				vertices.AddRange( GeneratePoints( start, cp, end, res ) );
 			}
 			else if (i != 1)
@@ -122,7 +123,6 @@ public class LevelGeneratorNew : MonoBehaviour {
 				cp = points[i];
 				end = (points[i] + points[i + 1]) / 2;
 
-				//SpawnCol((GeneratePoints(start, cp, end, points.Length)), start, Quaternion.identity, "2"); // Used for separate objects.
 				vertices.AddRange( GeneratePoints( start, cp, end, res ) );
 			}
 		}
@@ -131,20 +131,19 @@ public class LevelGeneratorNew : MonoBehaviour {
 		cp = points[points.Length - 2];
 		end = points[points.Length - 1];
 
-		//SpawnCol((GeneratePoints(start, cp, end, points.Length)), start, Quaternion.identity, "3"); // Used for separate objects.
 		vertices.AddRange(GeneratePoints( start, cp, end, res + 5) );
 
 		//SpawnCol(vertices);
 		return vertices;
 	}
 
-	EdgeCollider2D SpawnCol ( Vector2[] points, Vector2 pos, Quaternion rot, string name )
+	EdgeCollider2D SpawnCol ( Vector2[] points, Vector2 pos, Quaternion rot, string edgeName )
 	{
 		EdgeCollider2D edge = RequestEdgeCol().GetComponent<EdgeCollider2D>();
 		edge.points = points;
 		edge.transform.position = pos;
 		edge.transform.rotation = rot;
-		edge.name = name;
+		edge.name = edgeName;
 		return edge;
 	}
 	EdgeCollider2D SpawnCol ( List<Vector2> points, Vector2 pos, Quaternion rot )
