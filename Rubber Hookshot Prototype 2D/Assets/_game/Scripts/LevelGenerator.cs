@@ -40,6 +40,8 @@ public class LevelGenerator : MonoBehaviour {
 	{
 		// Get a few pseudo random points
 		Vector2[] randomPoints = RandomPoints( start, 300f, myPoints );
+
+		BackgroundGenerator.bg.GenerateBackground( start.x, start.x + 300f );
 	
 		//make points into a curve
 		int res = 20; // Highter number increases edgeCount;
@@ -69,6 +71,7 @@ public class LevelGenerator : MonoBehaviour {
 		start = generatedCol.points[generatedCol.pointCount - 1];
 
 		cam.SetOffset(roofOffset);
+
 	}
 
 	Vector2[] RandomPoints ( Vector2 startPoint, float width, Vector2[]points )
