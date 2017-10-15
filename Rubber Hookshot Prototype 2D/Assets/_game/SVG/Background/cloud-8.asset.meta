@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: da69dcc4274374dd689b4c7dfea71994
+timeCreated: 1508093350
+licenseType: Pro
+NativeFormatImporter:
+  mainObjectFileID: 11400000
+  userData: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 423.6 197"><defs><style>.cls-1{fill:#f9c13f;}.cls-2{fill:#fac942;}</style></defs><title>Asset
+    10</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_3" data-name="Layer
+    3"><path class="cls-1" d="M356,62H67.5a67.5,67.5,0,0,0,0,135H356a67.5,67.5,0,0,0,0-135Z"/><ellipse
+    class="cls-1" cx="231.6" cy="77.5" rx="124.4" ry="77.5"/><path class="cls-2" d="M356.1,62h-2.5C342,26.6,291.9,0,231.7,0c-53.4,0-98.8,20.9-116.5,50.3C137.9,35.4,170,26,205.7,26,265.9,26,316,52.6,327.6,88h2.5A67.5,67.5,0,0,1,389,188.4,67.5,67.5,0,0,0,356.1,62Z"/></g></g></svg>
+  assetBundleName: 
+  assetBundleVariant: 

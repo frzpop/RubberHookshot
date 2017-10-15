@@ -6,7 +6,6 @@ public class LevelGenerator : MonoBehaviour {
 
 	public static LevelGenerator lg;
 
-	public CameraFollow cam;
 	public GameObject edgeColPrefab;
 	public GameObject meshPrefab;
 	public GameObject anchorPrefab;
@@ -33,6 +32,10 @@ public class LevelGenerator : MonoBehaviour {
 	void Awake ()
     {
 		lg = this;
+	}
+
+	void Start()
+	{
 		GenerateLevel();
 	}
 
@@ -41,7 +44,8 @@ public class LevelGenerator : MonoBehaviour {
 		// Get a few pseudo random points
 		Vector2[] randomPoints = RandomPoints( start, 300f, myPoints );
 
-		BackgroundGenerator.bg.GenerateBackground( start.x, start.x + 300f );
+		// Generate Background
+		BackgroundGenerator.bg.GenerateBackground( start.x, start.x + 300f, randomPoints.GetLowestValueY() );
 	
 		//make points into a curve
 		int res = 20; // Highter number increases edgeCount;
@@ -58,7 +62,7 @@ public class LevelGenerator : MonoBehaviour {
 		generatedMesh2 = GenerateMesh2D( generatedCol, meshHeight, generatedCol.transform.position + heightOffsetMesh, Quaternion.identity );
 
 		//Generate anchors
-		GenerateAnchors( curveVerts, roofOffset );
+		//GenerateAnchors( curveVerts, roofOffset );
 
 		//Generate Obstacles
 		GenerateObstacles ( curveVerts, roofOffset, 0.05f );
@@ -70,7 +74,7 @@ public class LevelGenerator : MonoBehaviour {
 		//Set next start position 
 		start = generatedCol.points[generatedCol.pointCount - 1];
 
-		cam.SetOffset(roofOffset);
+		CameraFollow.cf.SetOffset(roofOffset);
 
 	}
 

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 430e31495c072452791b7c7eccd74272
+timeCreated: 1508093350
+licenseType: Pro
+NativeFormatImporter:
+  mainObjectFileID: 11400000
+  userData: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 490.9 229.5"><defs><style>.cls-1{fill:#f9c13f;}.cls-2{fill:#fac942;}</style></defs><title>Asset
+    8</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_3" data-name="Layer
+    3"><circle class="cls-1" cx="67.5" cy="100" r="67.5"/><circle class="cls-1" cx="244.9"
+    cy="100" r="67.5"/><circle class="cls-1" cx="423.4" cy="162" r="67.5"/><circle
+    class="cls-1" cx="201.4" cy="162" r="67.5"/><rect class="cls-1" x="201.4" y="94.5"
+    width="222" height="135"/><rect class="cls-1" x="67.5" y="32.5" width="179.8"
+    height="134.95"/><ellipse class="cls-1" cx="278.7" cy="102" rx="144.8" ry="102"/><path
+    class="cls-2" d="M172.8,32.5c28.7-6,69-14.5,105.9-9,75.5,11.3,112.9,44.2,118.4,97h.4a67.5,67.5,0,0,1,58.9,100.4A67.5,67.5,0,0,0,423.4,94.5H423C417.6,41.7,355,0,278.7,0c-41.8,0-79.5,12.5-105.9,32.5"/></g></g></svg>
+  assetBundleName: 
+  assetBundleVariant: 

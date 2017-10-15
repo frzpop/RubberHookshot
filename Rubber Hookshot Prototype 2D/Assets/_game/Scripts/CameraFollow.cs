@@ -3,14 +3,23 @@ using System.Collections;
 
 public class CameraFollow : MonoBehaviour {
 
+	public static CameraFollow cf;
 
 	public Transform target;
+
+	public Camera camera;
 
 	Vector3 follow;
 	float offset; // This is the difference in Y between ground and roof divided by two.
 
 	Vector3 playerVelocity; // To GameManager?
 	float velocityX;
+
+	void Awake()
+	{
+		cf = this;
+		camera = GetComponent<Camera>();
+	}
 
 	void Start ()
 	{

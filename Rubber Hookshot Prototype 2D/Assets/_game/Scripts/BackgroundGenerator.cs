@@ -13,48 +13,48 @@ public class BackgroundGenerator : MonoBehaviour {
 
 	MountainIndexes mountainIndexes;
 
-	const float yRange = 2f;
-	const float zRange = 2f;
-	const float scaleRange = 0.1f;
+	//const float yRange = 3f;
+	Range scaleRange = new Range( 1f, 3f );
+	Range tallScaleRange = new Range( 0.8f, 1.4f );
+	Range zRange = new Range( 1f, 30f );
 
 	float xPos;
 	float yPos;
 	float zPos;
 	float xyScale;
 
+
 	void Awake()
 	{
 		bg = this;
 	}
 
-	public void GenerateBackground( float start, float end )
+	public void GenerateBackground( float start, float end, float floor )
 	{
 		xPos = start;
-		yPos = 0f;
-		zPos = 3.5f;
+
+		float distanceFromCam;
+		Camera cam = CameraFollow.cf.camera;
 
 		while ( xPos < end )
 		{
-			yPos += Random.Range( -yRange, yRange );
-			zPos += Random.Range( -zRange, zRange );
-			xyScale = 1f + Random.Range( -scaleRange, scaleRange );
+			//yPos += Random.Range( -yRange, yRange );
+			zPos = Random.Range( zRange.min, zRange.max );
 
-			yPos = Mathf.Clamp( yPos, -5f, 5f );
-			zPos = Mathf.Clamp( zPos, 1f, 8f );
-
+			distanceFromCam = (cam.transform.position.z - zPos).MakePositive();
+			//float frustumHeight = cam.GetFrustumHeight( distanceFromCam );
+			yPos = floor - ( distanceFromCam * 0.08f );
+		
 			Vector3 pos = new Vector3( xPos, yPos, zPos );
-			Vector3 scale = new Vector3( xyScale, xyScale, 1f );
 
 			SVGRenderer mountain = RequestRandomMountain();
 
 			mountain.transform.position = pos;
-			mountain.transform.localScale = scale;
 
 			float width = mountain.meshRenderer.bounds.extents.magnitude;
 
-			xPos += Random.Range( width / 2, width );
+			xPos += Random.Range( width * 0.75f, width * 1.5f  );
 		}
-
 	}
 
 	SVGRenderer RequestRandomMountain()
@@ -66,21 +66,33 @@ public class BackgroundGenerator : MonoBehaviour {
 		switch ( rng )
 		{
 		case 0:
+			
 			randomMountain = smallMountains[mountainIndexes.smallIndex];
+			xyScale = Random.Range( scaleRange.min, scaleRange.max );
+			randomMountain.transform.localScale = new Vector3( xyScale, xyScale, 1f );
+
 			mountainIndexes.smallIndex++;
 			if ( mountainIndexes.smallIndex >= smallMountains.Length - 1 )
 				mountainIndexes.smallIndex = 0;
 			break;
 
 		case 1:
+			
 			randomMountain = mediumMountains[mountainIndexes.mediumIndex];
+			xyScale = Random.Range( scaleRange.min, scaleRange.max );
+			randomMountain.transform.localScale = new Vector3( xyScale, xyScale, 1f );
+
 			mountainIndexes.mediumIndex++;
 			if ( mountainIndexes.mediumIndex >= mediumMountains.Length - 1 )
 				mountainIndexes.mediumIndex = 0;
 			break;
 
 		case 2:
+			
 			randomMountain = tallMountains[mountainIndexes.tallIndex];
+			xyScale = Random.Range( tallScaleRange.min, tallScaleRange.max );
+			randomMountain.transform.localScale = new Vector3( xyScale, xyScale, 1f );
+
 			mountainIndexes.tallIndex++;
 			if ( mountainIndexes.tallIndex >= tallMountains.Length - 1 )
 				mountainIndexes.tallIndex = 0;
@@ -96,5 +108,18 @@ public class BackgroundGenerator : MonoBehaviour {
 		public int mediumIndex;
 		public int tallIndex;
 	}
+
+	struct Range
+	{
+		public float min;
+		public float max;
+
+		public Range( float min, float max )
+		{
+			this.min = min;
+			this.max = max;
+		}
+	}
+
 
 }
