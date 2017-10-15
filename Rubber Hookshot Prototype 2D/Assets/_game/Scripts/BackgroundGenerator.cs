@@ -7,22 +7,18 @@ public class BackgroundGenerator : MonoBehaviour {
 
 	public static BackgroundGenerator bg;
 
-	public SVGRenderer[] smallMountains;
-	public SVGRenderer[] mediumMountains;
-	public SVGRenderer[] tallMountains;
 
-	MountainIndexes mountainIndexes;
+	public SVGRenderer[] bgObjects;
+	public SVGAsset[] mountainSVGs;
+	public SVGAsset[] cloudSVGs;
 
-	//const float yRange = 3f;
-	Range scaleRange = new Range( 1f, 3f );
-	Range tallScaleRange = new Range( 0.8f, 1.4f );
-	Range zRange = new Range( 1f, 30f );
+	Range mountainScaleRange = new Range( 1f, 3f );
+	Range mountainScaleRangeTall = new Range( 0.8f, 1.4f );
+	Range mountainZRange = new Range( 1f, 30f );
 
-	float xPos;
-	float yPos;
-	float zPos;
-	float xyScale;
-
+	Range cloudScaleRange = new Range( 4f, 6f );
+	Range cloudYRange = new Range( 8f, 90f );
+	Range cloudZRange = new Range( 5f, 36f );
 
 	void Awake()
 	{
@@ -31,84 +27,97 @@ public class BackgroundGenerator : MonoBehaviour {
 
 	public void GenerateBackground( float start, float end, float floor )
 	{
-		xPos = start;
+		GenerateMountains( start, end, floor );
+
+		GenerateClouds( start, end );
+	}
+
+	void GenerateMountains( float start, float end, float floor )
+	{
+		float xPos = start + 15f;
+		float yPos;
+		float zPos;
 
 		float distanceFromCam;
 		Camera cam = CameraFollow.cf.camera;
 
 		while ( xPos < end )
 		{
-			//yPos += Random.Range( -yRange, yRange );
-			zPos = Random.Range( zRange.min, zRange.max );
-
-			distanceFromCam = (cam.transform.position.z - zPos).MakePositive();
-			//float frustumHeight = cam.GetFrustumHeight( distanceFromCam );
-			yPos = floor - ( distanceFromCam * 0.08f );
-		
-			Vector3 pos = new Vector3( xPos, yPos, zPos );
-
 			SVGRenderer mountain = RequestRandomMountain();
-
-			mountain.transform.position = pos;
-
 			float width = mountain.meshRenderer.bounds.extents.magnitude;
-
+			zPos = Random.Range( mountainZRange.min, mountainZRange.max );
+			distanceFromCam = (cam.transform.position.z - zPos).MakePositive();
 			xPos += Random.Range( width * 0.75f, width * 1.5f  );
+			yPos = floor - ( distanceFromCam * 0.08f );
+			Vector3 pos = new Vector3( xPos, yPos, zPos );
+			mountain.transform.position = pos;
 		}
 	}
 
+	void GenerateClouds( float start, float end )
+	{
+		float xPos = start;
+		float yPos;
+		float zPos;
+		while ( xPos < end )
+		{
+			xPos += Random.Range( 30f, 60f );
+			yPos = Random.Range( cloudYRange.min, cloudYRange.max );
+			zPos = Random.Range( cloudZRange.min, cloudZRange.max );
+			Vector3 pos = new Vector3( xPos, yPos, zPos );
+			SVGRenderer cloud = RequestRandomCloud();
+			cloud.transform.position = pos;
+		}
+	}
+
+	int poolIndex;
 	SVGRenderer RequestRandomMountain()
 	{
-		int rng = Random.Range( 0, 3 );
+		SVGRenderer mountain = bgObjects[poolIndex];
 
-		SVGRenderer randomMountain = null;
+		int rng = Random.Range( 0, mountainSVGs.Length );
 
-		switch ( rng )
-		{
-		case 0:
-			
-			randomMountain = smallMountains[mountainIndexes.smallIndex];
-			xyScale = Random.Range( scaleRange.min, scaleRange.max );
-			randomMountain.transform.localScale = new Vector3( xyScale, xyScale, 1f );
+		mountain.vectorGraphics = mountainSVGs[rng];
 
-			mountainIndexes.smallIndex++;
-			if ( mountainIndexes.smallIndex >= smallMountains.Length - 1 )
-				mountainIndexes.smallIndex = 0;
-			break;
+		float scale;
 
-		case 1:
-			
-			randomMountain = mediumMountains[mountainIndexes.mediumIndex];
-			xyScale = Random.Range( scaleRange.min, scaleRange.max );
-			randomMountain.transform.localScale = new Vector3( xyScale, xyScale, 1f );
+		if ( rng > 5 )
+			scale = Random.Range( mountainScaleRangeTall.min, mountainScaleRangeTall.max );
+		else
+			scale = Random.Range( mountainScaleRange.min, mountainScaleRange.max );
+		
+		mountain.transform.localScale = new Vector3( scale, scale, scale );
 
-			mountainIndexes.mediumIndex++;
-			if ( mountainIndexes.mediumIndex >= mediumMountains.Length - 1 )
-				mountainIndexes.mediumIndex = 0;
-			break;
+		ChangePoolIndex();
 
-		case 2:
-			
-			randomMountain = tallMountains[mountainIndexes.tallIndex];
-			xyScale = Random.Range( tallScaleRange.min, tallScaleRange.max );
-			randomMountain.transform.localScale = new Vector3( xyScale, xyScale, 1f );
-
-			mountainIndexes.tallIndex++;
-			if ( mountainIndexes.tallIndex >= tallMountains.Length - 1 )
-				mountainIndexes.tallIndex = 0;
-			break;
-		}
-
-		return randomMountain;
+		return mountain;
 	}
 
-	struct MountainIndexes
+	SVGRenderer RequestRandomCloud()
 	{
-		public int smallIndex;
-		public int mediumIndex;
-		public int tallIndex;
+		SVGRenderer cloud = bgObjects[poolIndex];
+
+		int rng = Random.Range( 0, cloudSVGs.Length );
+
+		cloud.vectorGraphics = cloudSVGs[rng];
+
+		float scale = Random.Range( cloudScaleRange.min, cloudScaleRange.max );
+
+		cloud.transform.localScale = new Vector3( scale, scale, scale );
+
+		ChangePoolIndex();
+
+		return cloud;
 	}
 
+	void ChangePoolIndex()
+	{
+		poolIndex++;
+
+		if ( poolIndex >= bgObjects.Length - 1 )
+			poolIndex = 0;
+	}
+		
 	struct Range
 	{
 		public float min;
