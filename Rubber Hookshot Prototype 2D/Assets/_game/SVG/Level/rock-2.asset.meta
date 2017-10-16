@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 5d67ef5dbf3f94f92acb515e8e31dc85
+timeCreated: 1508174695
+licenseType: Pro
+NativeFormatImporter:
+  mainObjectFileID: 11400000
+  userData: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 182 169.6"><defs><style>.cls-1{fill:#3030b2;}.cls-2{fill:none;stroke:#000;stroke-miterlimit:10;}.cls-3{fill:#383acd;}.cls-4{fill:#545bdd;}.cls-5{fill:#341d93;}</style></defs><title>rock-2</title><g
+    id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><polygon
+    class="cls-1" points="23.3 169.6 71.1 123.3 147.3 110.6 110 159.3 23.3 169.6"/><line
+    class="cls-2" x1="71.1" y1="123.3" x2="9.3" y2="88"/><polygon class="cls-3" points="45.3
+    20.7 136 41.3 128 0 45.3 20.7"/><polygon class="cls-4" points="136 41.3 182 40.7
+    128 0 136 41.3"/><polygon class="cls-5" points="23.3 169.6 0 150.7 9.3 88 71.1
+    123.3 23.3 169.6"/><polygon class="cls-3" points="147.3 110.6 182 40.7 136 41.3
+    71.1 123.3 147.3 110.6"/><polygon class="cls-1" points="9.3 88 45.3 20.7 136 41.3
+    71.1 123.3 9.3 88"/></g></g></svg>
+  assetBundleName: 
+  assetBundleVariant: 

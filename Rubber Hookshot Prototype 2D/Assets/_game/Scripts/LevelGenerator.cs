@@ -1,20 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using SVGImporter;
 
 public class LevelGenerator : MonoBehaviour {
 
 	public static LevelGenerator lg;
 
+	[Header("Prefabs")]
 	public GameObject edgeColPrefab;
 	public GameObject meshPrefab;
-	public GameObject anchorPrefab;
+	//public GameObject anchorPrefab;
 	public GameObject checkPointPrefab;
-	public GameObject obstaclePrefab;
+
+	[Header("Pools")]
 	public GameObject[] edgeCols;
 	public GameObject[] meshes;
+	public SVGRenderer[] rocks;
+	public SVGRenderer[] crystals;
+
+
+	[Header("Misc.")]
 	public Transform levelObjectsParent;
-	public Transform backgroundParent;
 
 	Vector2 start = Vector2.zero;
 	EdgeCollider2D generatedCol;
@@ -65,7 +72,7 @@ public class LevelGenerator : MonoBehaviour {
 		//GenerateAnchors( curveVerts, roofOffset );
 
 		//Generate Obstacles
-		GenerateObstacles ( curveVerts, roofOffset, 0.05f );
+		GenerateObstacles ( curveVerts, roofOffset, 0.12f );
 
 		//Spawn a checkpoint
 		Vector3 cpPos = new Vector3( start.x + ( generatedMesh.GetComponent<MeshRenderer>().bounds.size.x * 0.5f ) , start.y, -0.1f );
@@ -74,8 +81,7 @@ public class LevelGenerator : MonoBehaviour {
 		//Set next start position 
 		start = generatedCol.points[generatedCol.pointCount - 1];
 
-		CameraFollow.cf.SetOffset(roofOffset);
-
+		CameraFollow.cf.SetOffset( roofOffset );
 	}
 
 	Vector2[] RandomPoints ( Vector2 startPoint, float width, Vector2[]points )
@@ -267,6 +273,7 @@ public class LevelGenerator : MonoBehaviour {
 		return meshObj;
 	}
 
+	/*
 	void GenerateAnchors ( List<Vector2> myPoints, float distance )
 	{
 		float lastY = 0f;
@@ -346,30 +353,67 @@ public class LevelGenerator : MonoBehaviour {
 			}
 		}
 	}
-		
-	void GenerateObstacles ( List<Vector2> myPoints, float distance, float difi )
+	*/
+
+	/// <summary>
+	/// Generates obstacles. Diffculty goes from 0 to 1. If 1 all obstacles will be crystals if 0.5 half etc.
+	/// </summary>
+	void GenerateObstacles ( List<Vector2> points, float distance, float dificulty )
 	{
 		float minY;
 		float maxY;
-		float padding = 10f;
+		float y = 0;
+		float x;
+		float padding = 8f;
 		int divide = 20;
 
-		int amount = myPoints.Count / divide;
+		int amount = points.Count / divide;
 		int myIndex = 0;
 		Vector3 myPos;
-		GameObject spawnedObs;
+		Vector3 myRot;
+		float myScale;
+		SVGRenderer obstacle;
 
 		for (int i = 0; i < amount; i++) 
 		{
 			myIndex += divide;
-			minY = myPoints[myIndex].y + padding;
-			maxY = myPoints[myIndex].y + distance - padding;
+			minY = points[myIndex].y + padding;
+			maxY = points[myIndex].y + distance - padding;
 
-			float x = myPoints[myIndex].x + Random.Range( -10f, 10f );
-			float y = Random.Range( minY, maxY );
+			float yRng = Random.Range( minY, maxY );
+
+			if ( Mathf.Abs( yRng - y ) < 8f )
+			{
+				int random = Random.Range( 0, 2 );
+
+				if ( random == 0 )
+					yRng += Random.Range( 3f, 7f );
+				else
+					yRng -= Random.Range( 3f, 7f );
+			}
+
+			y = yRng;
+
+			x = points[myIndex].x + Random.Range( -8f, 12f );
 			myPos = new Vector3( x, y, -0.1f );
-			spawnedObs = Instantiate( obstaclePrefab, myPos, Quaternion.identity, levelObjectsParent );
-			spawnedObs.GetComponent<Obstacle>().Spiked( difi );
+			myRot = new Vector3( 0f, 0f, Random.Range( -50f, 50f ) );
+
+			float rng = Random.Range( 0f, 1f );
+
+			if ( rng > dificulty )
+			{
+				obstacle = RequestRock();
+				myScale = Random.Range( 0.6f, 1.5f );
+			}
+			else
+			{
+				obstacle = RequestCrystal();
+				myScale = Random.Range( 0.7f, 1.1f );
+			}
+
+			obstacle.transform.position = myPos;
+			obstacle.transform.localScale = new Vector3( myScale, myScale, 0f );
+			obstacle.transform.eulerAngles = myRot;
 		}	
 	}
 
@@ -380,25 +424,44 @@ public class LevelGenerator : MonoBehaviour {
 		return origin + pos;
 	}
 
-	int ec = 0;
-	int ecLoop = 5;
+	int edgePoolIndex;
 	GameObject RequestEdgeCol ()
 	{
-		ec++;
-		if ( ec > ecLoop )
-			ec = 0;
-		return edgeCols[ec];
+		edgePoolIndex++;
+		if ( edgePoolIndex > edgeCols.Length - 1 )
+			edgePoolIndex = 0;
+		
+		return edgeCols[edgePoolIndex];
 	}
 
-	int mi = 0;
-	int miLoop = 5;
+	int wallPoolIndex;
 	GameObject RequestMesh()
 	{
-		mi++;
-		if ( mi > miLoop )
-			mi = 0;
+		wallPoolIndex++;
+		if ( wallPoolIndex > meshes.Length - 1 )
+			wallPoolIndex = 0;
 
-		return meshes[mi];
+		return meshes[wallPoolIndex];
+	}
+
+	int rockPoolIndex;
+	SVGRenderer RequestRock()
+	{
+		rockPoolIndex++;
+		if ( rockPoolIndex > rocks.Length - 1 )
+			rockPoolIndex = 0;
+
+		return rocks[rockPoolIndex];
+	}
+
+	int crystalPoolIndex;
+	SVGRenderer RequestCrystal()
+	{
+		crystalPoolIndex++;
+		if ( crystalPoolIndex > crystals.Length - 1 )
+			crystalPoolIndex = 0;
+
+		return crystals[crystalPoolIndex];
 	}
 
 	public float[] GetColVertsX ()

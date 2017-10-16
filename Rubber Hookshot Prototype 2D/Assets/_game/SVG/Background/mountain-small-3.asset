@@ -11,9 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35648741dd5b14baa82bec08abfe7457, type: 3}
   m_Name: mountain-small-3
   m_EditorClassIdentifier: 
-  _lastTimeModified: 636435279737423320
+  _lastTimeModified: 636437728968108310
   _documentAsset: {fileID: 114824174488735384}
-  _sharedMesh: {fileID: 43233676128069272}
+  _sharedMesh: {fileID: 43448416557592848}
   _antialiasing: 1
   _generateCollider: 0
   _keepSVGFile: 0
@@ -21,12 +21,12 @@ MonoBehaviour:
   _colliderShape: []
   _format: 0
   _useGradients: 1
-  _meshCompression: 0
+  _meshCompression: 3
   _optimizeMesh: 1
   _generateNormals: 0
   _generateTangents: 0
   _scale: 0.1
-  _vpm: 1000
+  _vpm: 10
   _depthOffset: 0.01
   _compressDepth: 1
   _pivotPoint: {x: 0, y: 1}
@@ -45,7 +45,7 @@ MonoBehaviour:
     height: 24.51
   _useLayers: 0
   _layers: []
---- !u!43 &43233676128069272
+--- !u!43 &43448416557592848
 Mesh:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -79,31 +79,19 @@ Mesh:
   m_BindPose: []
   m_BoneNameHashes: 
   m_RootBoneNameHash: 0
-  m_MeshCompression: 0
+  m_MeshCompression: 3
   m_IsReadable: 1
   m_KeepVertices: 1
   m_KeepIndices: 1
-  m_IndexBuffer: 0000010002000e000f00100011000e00120011000f000e000f00110013000500060003000300040005000700060005000800090006000600070008000a00090008000b000c00090009000a000b000d000c000b00160017001400140015001600180017001600170019001a0017001a0018001b001c00190019001a001b001d001c001b001c001e001f001c001f001d00200021001e001e001f002000220021002000230024002100210022002300250024002300
+  m_IndexBuffer: 
   m_Skin: []
   m_VertexData:
-    m_CurrentChannels: 7
-    m_VertexCount: 38
+    m_CurrentChannels: 0
+    m_VertexCount: 0
     m_Channels:
     - stream: 0
       offset: 0
       format: 0
-      dimension: 3
-    - stream: 0
-      offset: 12
-      format: 0
-      dimension: 3
-    - stream: 0
-      offset: 24
-      format: 2
-      dimension: 4
-    - stream: 0
-      offset: 0
-      format: 0
       dimension: 0
     - stream: 0
       offset: 0
@@ -121,15 +109,27 @@ Mesh:
       offset: 0
       format: 0
       dimension: 0
-    m_DataSize: 1064
-    _typelessdata: 01003f420000000000000080000000000000000000000000f7ae2fff000000000000000000000080000000000000000000000000f7ae2fffd8a3ba417b14c44100000080000000000000000000000000f7ae2fff01003f420000000000000080000000000000008000000000f7ae2fff01003f42000000000000008000000000000080bf00000000f7ae2f0000000000000000000000008000000000000080bf00000000f7ae2f00000000000000000000000080000000000000008000000000f7ae2fff000000000000000000000080896d39bf0080303f00000000f7ae2f00d8a3ba417b14c44100000080006e39bf2f80303f00000000f7ae2f00d8a3ba417b14c44100000080000000000000008000000000f7ae2fffd8a3ba417b14c44100000080005a353fa2af343f00000000f7ae2f0001003f420000000000000080005c353f00b0343f00000000f7ae2f0001003f420000000000000080000000000000008000000000f7ae2fff01003f42000000000000008000000000000080bf00000000f7ae2f001fb8dc41680044410ad723bc000000000000000000000000ffb535ff01003f42000000000ad723bc000000000000000000000000ffb535ffcdccfe41000000000ad723bc000000000000000000000000ffb535fff728d241e17a80410ad723bc000000000000000000000000ffb535ff9b99c741878527410ad723bc000000000000000000000000ffb535ffd8a3ba417b14c4410ad723bc000000000000000000000000ffb535ff01003f42000000000ad7a3bc000000000000008000000000ffb535ff01003f42000000000ad7a3bc00000000000080bf00000000ffb53500cdccfe41000000000ad7a3bc00000000000080bf00000000ffb53500cdccfe41000000000ad7a3bc000000000000008000000000ffb535ffcdccfe41000000000ad7a3bc00cc71bf002ca8be00000000ffb535001fb8dc41680044410ad7a3bc000000000000008000000000ffb535ff1fb8dc41680044410ad7a3bc009404bfc013c7bf00000000ffb535009b99c741878527410ad7a3bc001e0f3f004254bf00000000ffb535009b99c741878527410ad7a3bc000000000000008000000000ffb535ff9b99c741878527410ad7a3bc002679bf00586b3e00000000ffb53500f728d241e17a80410ad7a3bc000000000000008000000000ffb535fff728d241e17a80410ad7a3bc002385bf00a05bbd00000000ffb53500d8a3ba417b14c4410ad7a3bc00c871bf353fa8be00000000ffb53500d8a3ba417b14c4410ad7a3bc000000000000008000000000ffb535ffd8a3ba417b14c4410ad7a3bc005a353fa2af343f00000000ffb5350001003f42000000000ad7a3bc005c353f00b0343f00000000ffb5350001003f42000000000ad7a3bc000000000000008000000000ffb535ff01003f42000000000ad7a3bc00000000000080bf00000000ffb53500
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    m_DataSize: 0
+    _typelessdata: 
   m_CompressedMesh:
     m_Vertices:
-      m_NumItems: 0
-      m_Range: 0
-      m_Start: 0
-      m_Data: 
-      m_BitSize: 0
+      m_NumItems: 114
+      m_Range: 47.770004
+      m_Start: -0.02
+      m_Data: ff030000000000405f8300fc0f0000ff0300000000000000000000000000f43508007d0d02405f8300fc0f0000ff0300c0ff0000f0e44100fc0f0000aa0200c08c580170613800d0d72000ff0300c0ff0000a02a0000a80a0000aa0200c0930701f0e441005c180e00178603c085e10030235600cc881500f43508007d0d02405f8300fc0f0000ff0300c0ff000000
+      m_BitSize: 10
     m_UV:
       m_NumItems: 0
       m_Range: 0
@@ -137,11 +137,11 @@ Mesh:
       m_Data: 
       m_BitSize: 0
     m_Normals:
-      m_NumItems: 0
-      m_Range: 0
-      m_Start: 0
-      m_Data: 
-      m_BitSize: 0
+      m_NumItems: 76
+      m_Range: 2.2637253
+      m_Start: -1.5552902
+      m_Data: ebbaaeebbaaeebb33eeb7af997bfaeffffffebba3eebbaaeebbaaeebbaaeebba3eebb3ae91b8ae1db053eb0ac9ebeaa891b8aeffffffebba3e
+      m_BitSize: 6
     m_Tangents:
       m_NumItems: 0
       m_Range: 0
@@ -153,7 +153,7 @@ Mesh:
       m_Data: 
       m_BitSize: 0
     m_NormalSigns:
-      m_NumItems: 0
+      m_NumItems: 38
       m_Data: 
       m_BitSize: 0
     m_TangentSigns:
@@ -161,19 +161,19 @@ Mesh:
       m_Data: 
       m_BitSize: 0
     m_FloatColors:
-      m_NumItems: 0
-      m_Range: 0
+      m_NumItems: 152
+      m_Range: 1
       m_Start: 0
-      m_Data: 
-      m_BitSize: 0
+      m_Data: aff3aff3aff3aff3af03af03aff3af03af03aff3af03af03aff3af03bff3bff3bff3bff3bff3bff3bff3bf03bf03bff3bf03bff3bf03bf03bff3bf03bff3bf03bf03bff3bf03bf03bff3bf03
+      m_BitSize: 4
     m_BoneIndices:
       m_NumItems: 0
       m_Data: 
       m_BitSize: 0
     m_Triangles:
-      m_NumItems: 0
-      m_Data: 
-      m_BitSize: 0
+      m_NumItems: 90
+      m_Data: 4020380f143952f4384f3415c63010c5611448621807a224c8c22489b234cc625d145559d8655d997669d8c66599b675dcc6791ff77560e8791f2886e04886a13896e408
+      m_BitSize: 6
     m_UVInfo: 0
   m_LocalAABB:
     m_Center: {x: 23.875002, y: 12.255, z: -0.01}

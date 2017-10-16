@@ -14,11 +14,11 @@ public class BackgroundGenerator : MonoBehaviour {
 
 	Range mountainScaleRange = new Range( 1f, 3f );
 	Range mountainScaleRangeTall = new Range( 0.8f, 1.4f );
-	Range mountainZRange = new Range( 1f, 30f );
+	Range mountainZRange = new Range( 3f, 33f );
 
 	Range cloudScaleRange = new Range( 4f, 6f );
 	Range cloudYRange = new Range( 8f, 90f );
-	Range cloudZRange = new Range( 5f, 36f );
+	Range cloudZRange = new Range( 7f, 40f );
 
 	void Awake()
 	{
@@ -86,7 +86,7 @@ public class BackgroundGenerator : MonoBehaviour {
 		else
 			scale = Random.Range( mountainScaleRange.min, mountainScaleRange.max );
 		
-		mountain.transform.localScale = new Vector3( scale, scale, scale );
+		mountain.transform.localScale = new Vector3( scale, scale, 0f );
 
 		ChangePoolIndex();
 
@@ -103,7 +103,7 @@ public class BackgroundGenerator : MonoBehaviour {
 
 		float scale = Random.Range( cloudScaleRange.min, cloudScaleRange.max );
 
-		cloud.transform.localScale = new Vector3( scale, scale, scale );
+		cloud.transform.localScale = new Vector3( scale, scale, 0f );
 
 		ChangePoolIndex();
 
