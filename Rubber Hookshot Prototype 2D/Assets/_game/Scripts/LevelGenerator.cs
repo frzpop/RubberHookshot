@@ -365,11 +365,11 @@ public class LevelGenerator : MonoBehaviour {
 			minY = myPoints[myIndex].y + padding;
 			maxY = myPoints[myIndex].y + distance - padding;
 
-			float x = myPoints[myIndex].x + Random.Range(-10f, 10f);
-			float y = Random.Range (minY, maxY);
-			myPos = new Vector3 ( x, y, -0.1f );
+			float x = myPoints[myIndex].x + Random.Range( -10f, 10f );
+			float y = Random.Range( minY, maxY );
+			myPos = new Vector3( x, y, -0.1f );
 			spawnedObs = Instantiate( obstaclePrefab, myPos, Quaternion.identity, levelObjectsParent );
-			spawnedObs.GetComponent<Obstacle> ().Spiked (difi);
+			spawnedObs.GetComponent<Obstacle>().Spiked( difi );
 		}	
 	}
 
