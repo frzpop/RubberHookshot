@@ -34,7 +34,6 @@ public class Player2D : MonoBehaviour {
 	float			curVelX;
 	float			curVelY;
 
-
 	void Awake()
 	{
 		player = this;
@@ -138,30 +137,21 @@ public class Player2D : MonoBehaviour {
 
 	void OnCollisionEnter2D ( Collision2D col )
 	{
-		if ( col != null )
+		if ( col == null )
+			return;
+		
+		//Debug.Log("Collided with: " + col.transform.tag);
+		if ( col.collider.tag == "Wall" )
 		{
-			if ( col.collider.tag == "Wall" )
-				UnAnchor();
-			
-			//Debug.Log("Collided with: " + col.transform.tag);
-			//Debug.Log( "Collided and VEL WAS:" + Mathf.Abs(rb.velocity.x) + ", " + Mathf.Abs(rb.velocity.y) );
-			if ((Mathf.Abs (rb.velocity.x) > 5f) || (Mathf.Abs (rb.velocity.y) > 5f)) 
-			{
-				ShieldHit();
-				if ( col.collider.tag == "Wall" )
-					UnAnchor();
-			}
-		}	
-	}
-	void OnTriggerEnter2D ( Collider2D other )
-	{
-		//Debug.Log( "Triggered " + other.transform.tag );
-		if ( other.tag == "Spikes" )
+			UnAnchor();
+			ShieldHit();
+		}
+		else if ( col.collider.tag == "Spikes" )
 		{
 			Death();
 		}
 	}
-
+		
 	void ShieldHit()
 	{
 		shieldCharges--;
@@ -231,6 +221,17 @@ public class Player2D : MonoBehaviour {
 	float Remap ( float value, float from1, float to1, float from2, float to2 )
 	{
 		return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+	}
+
+	public void ShootHook()
+	{
+		Player2D player = Player2D.player;
+		Vector2 origin = player.transform.position;
+		RaycastHit2D[] hits = Physics2D.RaycastAll( origin, player.outline.right, 1000f );
+		Debug.DrawRay( origin, player.outline.right * 100f, Color.red, 5f, false);
+
+
+
 	}
 
 }

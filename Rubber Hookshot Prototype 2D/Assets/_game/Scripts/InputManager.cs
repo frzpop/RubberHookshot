@@ -6,7 +6,6 @@ public class InputManager : MonoBehaviour {
 
 	public static InputManager input;
 
-
 	// Camera
 	Camera cam;
 	bool cameraOff;
@@ -53,13 +52,14 @@ public class InputManager : MonoBehaviour {
 		if ( Input.GetKeyUp( KeyCode.Space ) )
 			Player2D.player.UnAnchor();
 
-		if (CnInputManager.GetAxisRaw("Horizontal") != 0f || CnInputManager.GetAxisRaw("Vertical") != 0f)
-			Player2D.player.Rotate( CnInputManager.GetAxisRaw("Horizontal"), CnInputManager.GetAxisRaw("Vertical") );
+		if ( CnInputManager.GetAxisRaw( "Horizontal" ) != 0f || CnInputManager.GetAxisRaw( "Vertical" ) != 0f )
+			Player2D.player.Rotate( CnInputManager.GetAxisRaw( "Horizontal" ), CnInputManager.GetAxisRaw( "Vertical" ) );
 
-		if (CnInputManager.GetButtonDown("Fire3"))
-			Application.LoadLevel("LevelGeneratiorTest");
+		if ( CnInputManager.GetButtonDown( "Fire3" ) )
+			Application.LoadLevel( "LevelGeneratiorTest" );
 	}
-		
+
+
 	public void RaycastForAnchor()
 	{
 		Player2D player = Player2D.player;
@@ -73,7 +73,7 @@ public class InputManager : MonoBehaviour {
 
 		for (int i = 0; i < hits.Length; i++) 
 		{
-			if ( hits[i].collider.tag != "Anchor" && hits[i].collider.tag != "Wall" )
+			if ( hits[i].collider.tag != "Anchor" && hits[i].collider.tag != "Wall" && hits[i].collider.tag != "Spikes" )
 				continue;
 
 			if ( hits[i].collider.tag == "Anchor" && ColliderIsInCameraView( hits[i].collider ) )
@@ -84,7 +84,7 @@ public class InputManager : MonoBehaviour {
 				return;
 			}
 
-			if ( hits[i].collider.tag == "Wall" )
+			if ( hits[i].collider.tag == "Wall" || hits[i].collider.tag == "Spikes" )
 			{
 				float dif = Mathf.Abs( Player2D.player.transform.position.x - hits[i].point.x );
 				if ( dif < 80f)

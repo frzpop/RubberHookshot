@@ -395,9 +395,6 @@ public class LevelGenerator : MonoBehaviour {
 
 			float afterAdjustment = randomYInRange + adjust;
 
-//			Debug.Log( string.Format( "Last Y: {0}, Now RandomYInRange: {1}, Distance: {2}, Adjustment: {3}, AfterAdjustmen: {4}",
-//									y, randomYInRange, yDistanceFromLastObs, adjust, afterAdjustment ) );
-
 			y = afterAdjustment;
 
 			x = points[myIndex].x + Random.Range( -8f, 12f );
