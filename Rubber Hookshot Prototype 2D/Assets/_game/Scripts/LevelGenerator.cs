@@ -364,8 +364,9 @@ public class LevelGenerator : MonoBehaviour {
 		float maxY;
 		float y = 0;
 		float x;
-		float padding = 8f;
-		int divide = 20;
+
+		const float padding = 8f;
+		const int divide = 20;
 
 		int amount = points.Count / divide;
 		int myIndex = 0;
@@ -380,19 +381,24 @@ public class LevelGenerator : MonoBehaviour {
 			minY = points[myIndex].y + padding;
 			maxY = points[myIndex].y + distance - padding;
 
-			float yRng = Random.Range( minY, maxY );
+			float randomYInRange = Random.Range( minY, maxY );
 
-			if ( Mathf.Abs( yRng - y ) < 8f )
+			float yDistanceFromLastObs = Mathf.Abs( randomYInRange - y );
+			float adjust = 0f;
+			if ( yDistanceFromLastObs < 8f )
 			{
-				int random = Random.Range( 0, 2 );
-
-				if ( random == 0 )
-					yRng += Random.Range( 3f, 7f );
+				if ( randomYInRange > y )
+					adjust = Random.Range( 8f, 22f );
 				else
-					yRng -= Random.Range( 3f, 7f );
+					adjust = Random.Range( -8f, -22f );
 			}
 
-			y = yRng;
+			float afterAdjustment = randomYInRange + adjust;
+
+//			Debug.Log( string.Format( "Last Y: {0}, Now RandomYInRange: {1}, Distance: {2}, Adjustment: {3}, AfterAdjustmen: {4}",
+//									y, randomYInRange, yDistanceFromLastObs, adjust, afterAdjustment ) );
+
+			y = afterAdjustment;
 
 			x = points[myIndex].x + Random.Range( -8f, 12f );
 			myPos = new Vector3( x, y, -0.1f );
